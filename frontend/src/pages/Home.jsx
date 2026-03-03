@@ -1,32 +1,35 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Calendar, Users, Megaphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+    const { t } = useTranslation();
+
     return (
         <div className="home-page">
             {/* Hero Section */}
             <section style={{
-                background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+                background: 'linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%)',
                 padding: '6rem 0',
-                textAlign: 'center'
+                textAlign: 'center',
+                transition: 'var(--transition)'
             }}>
                 <div className="container">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem' }}
+                        style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', color: 'var(--text-main)' }}
                     >
-                        Welcome to <span style={{ color: 'var(--primary)' }}>CEP UR-CE</span> <br /> Rukara Campus
+                        {t('hero.welcome')} <span style={{ color: 'var(--primary)' }}>CEP UR-CE</span> <br /> {t('hero.rukara')}
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        style={{ fontSize: '1.25rem', color: 'var(--gray-600)', maxWidth: '700px', margin: '0 auto 2.5rem' }}
+                        style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '700px', margin: '0 auto 2.5rem' }}
                     >
-                        A vibrant religious community dedicated to prayer, worship, and fellowship.
-                        Connect with our choirs, stay updated on events, and join us in service.
+                        {t('hero.subtitle')}
                     </motion.p>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -35,17 +38,15 @@ const Home = () => {
                         style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}
                     >
                         <Link to="/events" className="btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-                            View Events <ArrowRight size={20} />
+                            {t('hero.view_events')} <ArrowRight size={20} />
                         </Link>
-                        <Link to="/about" style={{
-                            backgroundColor: 'white',
-                            color: 'var(--gray-900)',
+                        <Link to="/about" className="glass" style={{
                             padding: '1rem 2rem',
                             borderRadius: 'var(--radius)',
                             fontWeight: 500,
                             boxShadow: 'var(--shadow-sm)'
                         }}>
-                            Learn More
+                            {t('hero.learn_more')}
                         </Link>
                     </motion.div>
                 </div>
@@ -54,7 +55,7 @@ const Home = () => {
             {/* Features Grid */}
             <section style={{ padding: '5rem 0' }}>
                 <div className="container">
-                    <h2 className="section-title">Our <span>Community</span> Features</h2>
+                    <h2 className="section-title" style={{ color: 'var(--text-main)' }}>{t('features.title')}</h2>
                     <div style={{
                         display: 'grid',
                         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -62,18 +63,18 @@ const Home = () => {
                     }}>
                         <FeatureCard
                             icon={<Calendar size={32} color="var(--primary)" />}
-                            title="Events & Schedules"
-                            description="Stay informed about upcoming prayer meetings, worship nights, and special campus events."
+                            title={t('features.events.title')}
+                            description={t('features.events.desc')}
                         />
                         <FeatureCard
                             icon={<Users size={32} color="var(--primary)" />}
-                            title="Talented Choirs"
-                            description="Meet our diverse choirs and explore their journey through our media galleries."
+                            title={t('features.choirs.title')}
+                            description={t('features.choirs.desc')}
                         />
                         <FeatureCard
                             icon={<Megaphone size={32} color="var(--primary)" />}
-                            title="Announcements"
-                            description="Receive timely updates and notifications from the leadership and ministry heads."
+                            title={t('features.announcements.title')}
+                            description={t('features.announcements.desc')}
                         />
                     </div>
                 </div>
@@ -86,7 +87,7 @@ const FeatureCard = ({ icon, title, description }) => (
     <div className="glass" style={{
         padding: '2rem',
         borderRadius: 'var(--radius)',
-        transition: 'transform 0.3s ease',
+        transition: 'var(--transition)',
         textAlign: 'center'
     }}>
         <div style={{
@@ -97,12 +98,13 @@ const FeatureCard = ({ icon, title, description }) => (
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem'
+            margin: '0 auto 1.5rem',
+            transition: 'var(--transition)'
         }}>
             {icon}
         </div>
-        <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem' }}>{title}</h3>
-        <p style={{ color: 'var(--gray-600)' }}>{description}</p>
+        <h3 style={{ marginBottom: '1rem', fontSize: '1.5rem', color: 'var(--text-main)' }}>{title}</h3>
+        <p style={{ color: 'var(--text-muted)' }}>{description}</p>
     </div>
 );
 
