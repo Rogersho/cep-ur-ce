@@ -8,6 +8,7 @@ const eventRoutes = require('./routes/eventRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const choirRoutes = require('./routes/choirRoutes');
 const ministryRoutes = require('./routes/ministryRoutes');
+const galleryRoutes = require('./routes/galleryRoutes');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/choirs', choirRoutes);
 app.use('/api/ministries', ministryRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 // Health check
 app.get('/', (req, res) => res.send('CEP UR-CE API is running...'));
