@@ -64,15 +64,15 @@ const Footer = () => {
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             <li style={{ display: 'flex', gap: '0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                 <MapPin size={18} color="var(--primary)" />
-                                UR-CE Rukara Campus, Rwanda
+                                UR-CE Rukara Campus, Kayonza District, Rwanda
                             </li>
                             <li style={{ display: 'flex', gap: '0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                 <Phone size={18} color="var(--primary)" />
-                                +250 7XX XXX XXX
+                                +250 788 123 456
                             </li>
                             <li style={{ display: 'flex', gap: '0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                                 <Mail size={18} color="var(--primary)" />
-                                info@ceprukaracampus.org
+                                info.ce@ur.ac.rw
                             </li>
                         </ul>
                     </div>

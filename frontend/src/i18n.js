@@ -15,23 +15,23 @@ const resources = {
             hero: {
                 welcome: 'Welcome to',
                 rukara: 'Rukara Campus',
-                subtitle: 'A vibrant religious community dedicated to prayer, worship, and fellowship. Connect with our choirs, stay updated on events, and join us in service.',
+                subtitle: 'The University of Rwanda - College of Education (UR-CE) Rukara Campus is a center of excellence dedicated to training highly skilled, innovative, and responsible educators for a better society.',
                 view_events: 'View Events',
                 learn_more: 'Learn More'
             },
             features: {
-                title: 'Our Community Features',
+                title: 'Our Institution',
                 events: {
-                    title: 'Events & Schedules',
-                    desc: 'Stay informed about upcoming prayer meetings, worship nights, and special campus events.'
+                    title: 'Mission',
+                    desc: 'To train and produce knowledgeable, skilled, and innovative educators to meet the needs of Rwandan society and the global community.'
                 },
                 choirs: {
-                    title: 'Talented Choirs',
-                    desc: 'Meet our diverse choirs and explore their journey through our media galleries.'
+                    title: 'Vision',
+                    desc: 'To be an international center of excellence for education professional training and research.'
                 },
                 announcements: {
-                    title: 'Announcements',
-                    desc: 'Receive timely updates and notifications from the leadership and ministry heads.'
+                    title: 'Values',
+                    desc: 'We value Commitment, Equity, Partnership, Transparency, Innovation, and Lifelong Learning.'
                 }
             }
         }
@@ -48,23 +48,23 @@ const resources = {
             hero: {
                 welcome: 'Murakaza neza muri',
                 rukara: 'Kaminuza ya Rukara',
-                subtitle: 'Umuryango w’abizera urangwa n’isengesho, kuramya, n’ubusabane. Huza na korali zacu, umenye amakuru y’ibikorwa, kandi ufatanye natwe mu murimo.',
+                subtitle: 'Kaminuza y’u Rwanda - Ishuri Nderabarezi (UR-CE), ishami rya Rukara ni ihuriro ry’ubumenyi n’uburezi bugamije gutegura abarimu b’abanyamwuga bafite ubumenyi n’indangagaciro.',
                 view_events: 'Reba ibikorwa',
                 learn_more: 'Soma birambuye'
             },
             features: {
-                title: 'Ibyo dukora mu muryango',
+                title: 'Ibyo dukora',
                 events: {
-                    title: 'Ibikorwa & Gahunda',
-                    desc: 'Hanya kumenya amakuru y’amateraniro yo gusenga, amajoro yo kuramya, n’ibindi birori byihariye biba kuri kaminuza.'
+                    title: 'Inshingano',
+                    desc: 'Gutegura no gutanga abarimu bafite ubumenyi n’ubushobozi bwo guhangana n’ibibazo by’isi n’iby’u Rwanda muri rusange.'
                 },
                 choirs: {
-                    title: 'Korali zacu',
-                    desc: 'Menya korali zacu zitandukanye kandi urebe urugendo rwazo mu mafoto no mu mashusho.'
+                    title: 'Icyerekezo',
+                    desc: 'Kuba ihuriro mpuzamahanga ry’icyitegererezo mu burezi, ubushakashatsi, n’amahugurwa y’abanyamwuga mu burezi.'
                 },
                 announcements: {
-                    title: 'Amatangazo',
-                    desc: 'Habwa amakuru n’amatangazo agezweho avuye mu buyobozi no mu bashinzwe minisiteri.'
+                    title: 'Indangagaciro',
+                    desc: 'Twubakiye ku Kwiyemeza, Uburinganire, Ubufatanye, Mucyo, no Guhanga Udushya mu burezi.'
                 }
             }
         }
@@ -81,23 +81,23 @@ const resources = {
             hero: {
                 welcome: 'Bienvenue à',
                 rukara: 'Campus de Rukara',
-                subtitle: 'Une communauté religieuse vibrante dédiée à la prière, à l’adoration et à la fraternité. Connectez-vous avec nos chorales, restez informé des événements et rejoignez-nous dans le service.',
+                subtitle: 'L’Université du Rwanda - Collège de l’Éducation (UR-CE) Campus de Rukara est un centre d’excellence dédié à la formation d’éducateurs hautement qualifiés, innovants et responsables pour une société meilleure.',
                 view_events: 'Voir les événements',
                 learn_more: 'En savoir plus'
             },
             features: {
-                title: 'Nos Caractéristiques',
+                title: 'Notre Institution',
                 events: {
-                    title: 'Événements & Horaires',
-                    desc: 'Restez informé des prochaines réunions de prière, des nuits d’adoration et des événements spéciaux du campus.'
+                    title: 'Mission',
+                    desc: 'Former et produire des éducateurs compétents et innovants pour répondre aux besoins de la société rwandaise et de la communauté mondiale.'
                 },
                 choirs: {
-                    title: 'Chorales Talentueuses',
-                    desc: 'Rencontrez nos diverses chorales et explorez leur parcours à travers nos galeries médias.'
+                    title: 'Vision',
+                    desc: 'Être un centre d’excellence international pour la formation professionnelle en éducation et la recherche.'
                 },
                 announcements: {
-                    title: 'Annonces',
-                    desc: 'Recevez des mises à jour opportunes et des notifications de la part des dirigeants et des chefs de ministère.'
+                    title: 'Valeurs',
+                    desc: 'Nous valorisons l’engagement, l’équité, le partenariat, la transparence, l’innovation et l’apprentissage tout au long de la vie.'
                 }
             }
         }
