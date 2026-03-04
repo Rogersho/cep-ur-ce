@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import Choirs from './pages/Choirs';
@@ -19,9 +20,7 @@ function App() {
                     {/* <Route path="/admin/*" element={<AdminDashboard />} /> */}
                 </Routes>
             </main>
-            <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f1f5f9', marginTop: '4rem' }}>
-                <p>&copy; 2024 CEP UR-CE Rukara Campus. All rights reserved.</p>
-            </footer>
+            <Footer />
         </div>
     );
 }
