@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS choirs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
+    leader_name VARCHAR(255),
     thumbnail_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS events (
     description TEXT,
     event_date DATETIME NOT NULL,
     location VARCHAR(255),
+    category VARCHAR(100) DEFAULT NULL,
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -52,17 +54,7 @@ CREATE TABLE IF NOT EXISTS galleries (
     FOREIGN KEY (choir_id) REFERENCES choirs(id) ON DELETE SET NULL
 );
 
--- 6. Ministries Table
-CREATE TABLE IF NOT EXISTS ministries (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    leader_name VARCHAR(255),
-    description TEXT,
-    contact_info VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 7. Service Schedules Table
+-- 6. Service Schedules Table
 CREATE TABLE IF NOT EXISTS service_schedules (
     id INT AUTO_INCREMENT PRIMARY KEY,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,

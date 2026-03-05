@@ -40,4 +40,17 @@ const deleteAnnouncement = async (req, res) => {
     }
 };
 
-module.exports = { getAnnouncements, createAnnouncement, deleteAnnouncement };
+const updateAnnouncement = async (req, res) => {
+    const { title, content, importance } = req.body;
+    try {
+        await pool.execute(
+            'UPDATE announcements SET title=?, content=?, importance=? WHERE id=?',
+            [title, content, importance || 'normal', req.params.id]
+        );
+        res.json({ message: 'Announcement updated' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { getAnnouncements, createAnnouncement, deleteAnnouncement, updateAnnouncement };

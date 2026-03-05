@@ -9,7 +9,7 @@ const Home = () => {
     return (
         <div className="home-page">
             {/* Hero Section */}
-            <section style={{
+            <section className="hero-section" style={{
                 background: 'linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%)',
                 padding: '6rem 0',
                 textAlign: 'center',
@@ -19,6 +19,7 @@ const Home = () => {
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
+                        className="hero-title"
                         style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', color: 'var(--text-main)' }}
                     >
                         {t('hero.welcome')} <span style={{ color: 'var(--primary)' }}>CEP UR-CE</span> <br /> {t('hero.rukara')}
@@ -35,7 +36,8 @@ const Home = () => {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4 }}
-                        style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}
+                        className="hero-ctas"
+                        style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}
                     >
                         <Link to="/events" className="btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
                             {t('hero.view_events')} <ArrowRight size={20} />
@@ -44,13 +46,30 @@ const Home = () => {
                             padding: '1rem 2rem',
                             borderRadius: 'var(--radius)',
                             fontWeight: 500,
-                            boxShadow: 'var(--shadow-sm)'
+                            boxShadow: 'var(--shadow-sm)',
+                            backgroundColor: 'var(--white)'
                         }}>
                             {t('hero.learn_more')}
                         </Link>
                     </motion.div>
                 </div>
             </section>
+
+            <style>{`
+                @media (max-width: 768px) {
+                    .hero-section {
+                        padding: 4rem 0 !important;
+                    }
+                    .hero-title {
+                        fontSize: 2.25rem !important;
+                        lineHeight: 1.2 !important;
+                    }
+                    .hero-ctas {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+                }
+            `}</style>
 
             {/* Features Grid */}
             <section style={{ padding: '5rem 0' }}>

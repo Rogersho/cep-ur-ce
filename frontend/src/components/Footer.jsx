@@ -52,7 +52,6 @@ const Footer = () => {
                         <h4 style={{ color: 'var(--text-main)', marginBottom: '1.5rem', fontWeight: 700 }}>Community</h4>
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <FooterLink to="/gallery" label={t('nav.gallery')} />
-                            <FooterLink to="/ministries" label="Ministries" />
                             <FooterLink to="/announcements" label="Announcements" />
                             <FooterLink to="/login" label={t('nav.login')} />
                         </ul>
@@ -82,7 +81,11 @@ const Footer = () => {
                 <div style={{
                     borderTop: '1px solid var(--border)',
                     paddingTop: '2rem',
-                    textAlign: 'center',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
                     color: 'var(--text-muted)',
                     fontSize: '0.85rem'
                 }}>

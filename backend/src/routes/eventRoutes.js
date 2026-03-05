@@ -6,8 +6,8 @@ const upload = require('../utils/upload');
 
 router.get('/', getEvents);
 router.get('/:id', getEventById);
-router.post('/', protect, adminOnly, upload.single('images'), createEvent);
-router.put('/:id', protect, adminOnly, upload.single('images'), updateEvent);
+router.post('/', protect, adminOnly, upload.single('image'), createEvent);
+router.put('/:id', protect, adminOnly, upload.single('image'), updateEvent);
 router.delete('/:id', protect, adminOnly, deleteEvent);
 
 module.exports = router;

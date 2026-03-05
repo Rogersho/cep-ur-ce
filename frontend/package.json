@@ -11,7 +11,9 @@
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
     "axios": "^1.6.0",
+    "downloadjs": "^1.4.7",
     "framer-motion": "^10.16.4",
+    "html-to-image": "^1.11.13",
     "i18next": "^25.8.13",
     "i18next-browser-languagedetector": "^8.2.1",
     "lucide-react": "^0.288.0",

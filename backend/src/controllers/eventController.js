@@ -29,15 +29,15 @@ const getEventById = async (req, res) => {
 // @route   POST /api/events
 // @access  Private/Admin
 const createEvent = async (req, res) => {
-    const { title, description, event_date, location } = req.body;
+    const { title, description, date, location, category } = req.body;
     let image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
     try {
         const [result] = await pool.execute(
-            'INSERT INTO events (title, description, event_date, location, image_url) VALUES (?, ?, ?, ?, ?)',
-            [title, description, event_date, location, image_url]
+            'INSERT INTO events (title, description, event_date, location, category, image_url) VALUES (?, ?, ?, ?, ?, ?)',
+            [title, description, date, location, category || null, image_url]
         );
-        res.status(201).json({ id: result.insertId, title, description, event_date, location, image_url });
+        res.status(201).json({ id: result.insertId, title, description, event_date: date, location, category, image_url });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -47,9 +47,9 @@ const createEvent = async (req, res) => {
 // @route   PUT /api/events/:id
 // @access  Private/Admin
 const updateEvent = async (req, res) => {
-    const { title, description, event_date, location } = req.body;
-    let updateQuery = 'UPDATE events SET title=?, description=?, event_date=?, location=?';
-    let updateParams = [title, description, event_date, location];
+    const { title, description, date, location, category } = req.body;
+    let updateQuery = 'UPDATE events SET title=?, description=?, event_date=?, location=?, category=?';
+    let updateParams = [title, description, date, location, category || null];
 
     if (req.file) {
         updateQuery += ', image_url=?';

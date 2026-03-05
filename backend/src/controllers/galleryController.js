@@ -16,20 +16,47 @@ const getGalleryItems = async (req, res) => {
 // @route   POST /api/gallery
 // @access  Private/Admin
 const addGalleryItem = async (req, res) => {
-    const { choir_id, title, media_type } = req.body;
+    const { title, choir_id } = req.body;
     let image_path = req.file ? `/uploads/${req.file.filename}` : null;
-
-    if (!image_path) return res.status(400).json({ message: 'Please upload an image' });
-
     try {
         const [result] = await pool.execute(
-            'INSERT INTO galleries (choir_id, title, image_path, media_type) VALUES (?, ?, ?, ?)',
-            [choir_id || null, title, image_path, media_type || 'image']
+            'INSERT INTO galleries (title, image_path, choir_id) VALUES (?, ?, ?)',
+            [title, image_path, choir_id || null]
         );
-        res.status(201).json({ id: result.insertId, choir_id, title, image_path, media_type });
+        res.status(201).json({ id: result.insertId, title, image_path, choir_id });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-module.exports = { getGalleryItems, addGalleryItem };
+const deleteGalleryItem = async (req, res) => {
+    try {
+        await pool.execute('DELETE FROM galleries WHERE id = ?', [req.params.id]);
+        res.json({ message: 'Photo removed' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const updateGalleryItem = async (req, res) => {
+    const { title, choir_id } = req.body;
+    let updateQuery = 'UPDATE galleries SET title=?, choir_id=?';
+    let updateParams = [title, choir_id || null];
+
+    if (req.file) {
+        updateQuery += ', image_path=?';
+        updateParams.push(`/uploads/${req.file.filename}`);
+    }
+
+    updateQuery += ' WHERE id=?';
+    updateParams.push(req.params.id);
+
+    try {
+        await pool.execute(updateQuery, updateParams);
+        res.json({ message: 'Gallery item updated' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { getGalleryItems, addGalleryItem, deleteGalleryItem, updateGalleryItem };

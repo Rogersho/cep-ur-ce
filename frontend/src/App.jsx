@@ -6,7 +6,6 @@ import Events from './pages/Events';
 import Choirs from './pages/Choirs';
 import Gallery from './pages/Gallery';
 import Announcements from './pages/Announcements';
-import Ministries from './pages/Ministries';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
@@ -18,7 +17,6 @@ import ManageEvents from './pages/Admin/ManageEvents';
 import ManageGallery from './pages/Admin/ManageGallery';
 import ManageAnnouncements from './pages/Admin/ManageAnnouncements';
 import ManageChoirs from './pages/Admin/ManageChoirs';
-import ManageMinistries from './pages/Admin/ManageMinistries';
 
 function App() {
     return (
@@ -35,7 +33,6 @@ function App() {
                                 <Route path="/choirs" element={<Choirs />} />
                                 <Route path="/gallery" element={<Gallery />} />
                                 <Route path="/announcements" element={<Announcements />} />
-                                <Route path="/ministries" element={<Ministries />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/register" element={<Register />} />
                             </Routes>
@@ -52,7 +49,6 @@ function App() {
                         <Route path="gallery" element={<ManageGallery />} />
                         <Route path="announcements" element={<ManageAnnouncements />} />
                         <Route path="choirs" element={<ManageChoirs />} />
-                        <Route path="ministries" element={<ManageMinistries />} />
                     </Route>
                 </Route>
             </Routes>

@@ -7,7 +7,6 @@ const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const announcementRoutes = require('./routes/announcementRoutes');
 const choirRoutes = require('./routes/choirRoutes');
-const ministryRoutes = require('./routes/ministryRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 
 const app = express();
@@ -22,11 +21,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/choirs', choirRoutes);
-app.use('/api/ministries', ministryRoutes);
 app.use('/api/gallery', galleryRoutes);
 
-// Health check
-app.get('/', (req, res) => res.send('CEP UR-CE API is running...'));
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('SERVER ERROR:', err.stack);
+    res.status(500).json({
+        message: 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+});
 
 const PORT = process.env.PORT || 5000;
 

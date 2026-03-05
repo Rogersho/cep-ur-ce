@@ -44,14 +44,17 @@ const Register = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '2rem 1rem'
+            padding: '2rem 1rem',
+            background: 'linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%)',
+            transition: 'var(--transition)'
         }}>
             <div className="glass" style={{
                 width: '100%',
                 maxWidth: '450px',
                 padding: '2.5rem',
                 borderRadius: 'var(--radius)',
-                boxShadow: 'var(--shadow-md)'
+                boxShadow: 'var(--shadow-xl)',
+                animation: 'fadeIn 0.5s ease-out'
             }}>
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                     <div style={{
@@ -73,15 +76,16 @@ const Register = () => {
 
                 {error && (
                     <div style={{
-                        backgroundColor: '#fee2e2',
-                        color: '#dc2626',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        color: '#ef4444',
                         padding: '0.75rem',
                         borderRadius: '0.5rem',
                         marginBottom: '1.5rem',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '0.5rem',
-                        fontSize: '0.9rem'
+                        fontSize: '0.9rem',
+                        border: '1px solid rgba(239, 68, 68, 0.2)'
                     }}>
                         <AlertCircle size={18} />
                         {error}
@@ -105,7 +109,8 @@ const Register = () => {
                                 border: '1px solid var(--border)',
                                 background: 'var(--white)',
                                 color: 'var(--text-main)',
-                                outline: 'none'
+                                outline: 'none',
+                                transition: 'var(--transition)'
                             }}
                         />
                     </div>
@@ -126,7 +131,8 @@ const Register = () => {
                                 border: '1px solid var(--border)',
                                 background: 'var(--white)',
                                 color: 'var(--text-main)',
-                                outline: 'none'
+                                outline: 'none',
+                                transition: 'var(--transition)'
                             }}
                         />
                     </div>
@@ -147,7 +153,8 @@ const Register = () => {
                                 border: '1px solid var(--border)',
                                 background: 'var(--white)',
                                 color: 'var(--text-main)',
-                                outline: 'none'
+                                outline: 'none',
+                                transition: 'var(--transition)'
                             }}
                         />
                     </div>
@@ -168,7 +175,8 @@ const Register = () => {
                                 border: '1px solid var(--border)',
                                 background: 'var(--white)',
                                 color: 'var(--text-main)',
-                                outline: 'none'
+                                outline: 'none',
+                                transition: 'var(--transition)'
                             }}
                         />
                     </div>
@@ -193,6 +201,12 @@ const Register = () => {
                     Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>Log in</Link>
                 </p>
             </div>
+            <style>{`
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 };
