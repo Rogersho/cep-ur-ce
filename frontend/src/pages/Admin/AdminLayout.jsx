@@ -11,7 +11,8 @@ import {
     X,
     Sun,
     Moon,
-    Languages
+    Languages,
+    FolderOpen
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -22,6 +23,7 @@ const AdminLayout = () => {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'auto');
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -53,13 +55,15 @@ const AdminLayout = () => {
         navigate('/login');
     };
 
-    const navItems = [
+    let navItems = [
         { path: '/admin', icon: <LayoutDashboard size={20} />, label: t('admin.nav.overview') },
         { path: '/admin/events', icon: <Calendar size={20} />, label: t('admin.nav.events') },
         { path: '/admin/choirs', icon: <Music size={20} />, label: t('admin.nav.choirs') },
+        { path: '/admin/albums', icon: <FolderOpen size={20} />, label: 'Albums' },
         { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
         { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
     ];
+
 
     return (
         <div className="admin-container" style={{ display: 'flex', minHeight: '100vh', background: 'var(--background)' }}>

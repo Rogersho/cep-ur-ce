@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Plus, Trash2, Megaphone, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { useTranslation } from 'react-i18next';
+import API_BASE from '../../api';
 
 const ManageAnnouncements = () => {
     const { t } = useTranslation();
@@ -21,7 +22,7 @@ const ManageAnnouncements = () => {
     const { data: announcements, isLoading } = useQuery({
         queryKey: ['admin-announcements'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:5000/api/announcements');
+            const res = await axios.get(`${API_BASE}/api/announcements`);
             return res.data;
         }
     });
@@ -29,7 +30,7 @@ const ManageAnnouncements = () => {
     const createMutation = useMutation({
         mutationFn: async (newAnn) => {
             const token = localStorage.getItem('token');
-            return axios.post('http://localhost:5000/api/announcements', newAnn, {
+            return axios.post(`${API_BASE}/api/announcements`, newAnn, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
         },
@@ -47,7 +48,7 @@ const ManageAnnouncements = () => {
     const updateMutation = useMutation({
         mutationFn: async (updatedAnn) => {
             const token = localStorage.getItem('token');
-            return axios.put(`http://localhost:5000/api/announcements/${editId}`, updatedAnn, {
+            return axios.put(`${API_BASE}/api/announcements/${editId}`, updatedAnn, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
         },
@@ -65,7 +66,7 @@ const ManageAnnouncements = () => {
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
             const token = localStorage.getItem('token');
-            return axios.delete(`http://localhost:5000/api/announcements/${id}`, {
+            return axios.delete(`${API_BASE}/api/announcements/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
         },
@@ -115,49 +116,64 @@ const ManageAnnouncements = () => {
             </div>
 
             {showForm && (
-                <div className="glass" style={{ padding: '2rem', borderRadius: 'var(--radius)', marginBottom: '3rem', maxWidth: '800px' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
-                        {isEditing ? t('admin.news.edit_title') : t('admin.news.new_title')}
-                    </h2>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_title')}</label>
-                            <input
-                                type="text"
-                                required
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            />
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_priority')}</label>
-                            <select
-                                value={formData.priority}
-                                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            >
-                                <option value="Normal">{t('admin.news.priority_normal')}</option>
-                                <option value="High">{t('admin.news.priority_high')}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_content')}</label>
-                            <textarea
-                                required
-                                rows="5"
-                                value={formData.content}
-                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)', resize: 'none' }}
-                            />
-                        </div>
-                        <button type="submit" className="btn-primary" style={{ padding: '1rem' }} disabled={createMutation.isLoading || updateMutation.isLoading}>
-                            {isEditing ?
-                                (updateMutation.isLoading ? t('admin.common.loading') : t('admin.common.update')) :
-                                (createMutation.isLoading ? t('admin.common.loading') : t('admin.common.add'))
-                            }
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, width: '100%', height: '100%',
+                    background: 'rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(4px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 2000,
+                    padding: '1rem'
+                }}>
+                    <div className="glass" style={{ width: '100%', maxWidth: '650px', padding: '2rem', borderRadius: 'var(--radius)', position: 'relative', background: 'var(--card-bg)', maxHeight: '90vh', overflowY: 'auto' }}>
+                        <button onClick={() => { setShowForm(false); setIsEditing(false); setFormData({ title: '', content: '', priority: 'Normal' }); }} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', color: 'var(--text-muted)' }}>
+                            <X size={24} />
                         </button>
-                    </form>
+                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+                            {isEditing ? t('admin.news.edit_title') : t('admin.news.new_title')}
+                        </h2>
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_title')}</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={formData.title}
+                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_priority')}</label>
+                                <select
+                                    value={formData.priority}
+                                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                >
+                                    <option value="Normal">{t('admin.news.priority_normal')}</option>
+                                    <option value="High">{t('admin.news.priority_high')}</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.news.field_content')}</label>
+                                <textarea
+                                    required
+                                    rows="5"
+                                    value={formData.content}
+                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)', resize: 'none' }}
+                                />
+                            </div>
+                            <button type="submit" className="btn-primary" style={{ padding: '1rem' }} disabled={createMutation.isLoading || updateMutation.isLoading}>
+                                {isEditing ?
+                                    (updateMutation.isLoading ? t('admin.common.loading') : t('admin.common.update')) :
+                                    (createMutation.isLoading ? t('admin.common.loading') : t('admin.common.add'))
+                                }
+                            </button>
+                        </form>
+                    </div>
                 </div>
             )}
 

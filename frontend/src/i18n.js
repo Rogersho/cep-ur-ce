@@ -11,7 +11,8 @@ const resources = {
                 gallery: 'Gallery',
                 news: 'News',
                 about: 'About',
-                login: 'Login'
+                login: 'Login',
+                my_uploads: 'My Uploads'
             },
             hero: {
                 welcome: 'Welcome to',
@@ -169,7 +170,22 @@ const resources = {
                     error_create: 'Error uploading photo',
                     error_update: 'Error updating photo',
                     error_delete: 'Error deleting photo'
+                },
+                permissions: {
+                    title: 'Permissions',
+                    grant: 'Grant',
+                    revoke: 'Revoke',
+                    authorized_users: 'Currently Authorized Users'
                 }
+            },
+            my_uploads: {
+                title: 'My',
+                span: 'Uploads',
+                subtitle: 'Manage items you are authorized to upload to the community gallery.',
+                no_items: 'No items uploaded by you yet.',
+                authorized_albums: 'Authorized Albums',
+                authorized_choirs: 'Authorized Choirs',
+                upload_btn: 'Upload Item'
             }
         }
     },
@@ -181,7 +197,8 @@ const resources = {
                 gallery: 'Amafoto',
                 news: 'Amakuru',
                 about: 'Ibitwerekeye',
-                login: 'Injira'
+                login: 'Injira',
+                my_uploads: 'Ibyo nashyizeho'
             },
             hero: {
                 welcome: 'Murakaza neza muri',
@@ -339,7 +356,22 @@ const resources = {
                     error_create: 'Ikibazo mu gushyiraho ifoto',
                     error_update: 'Ikibazo mu kuvugurura ifoto',
                     error_delete: 'Ikibazo mu gusiba ifoto'
+                },
+                permissions: {
+                    title: 'Uburenganzira',
+                    grant: 'Tanga',
+                    revoke: 'Kuraho',
+                    authorized_users: 'Abafite uburenganzira'
                 }
+            },
+            my_uploads: {
+                title: 'Ibyo',
+                span: 'Nashyizeho',
+                subtitle: 'Genzura amapoto n\'amashusho wemerewe gushyira hano.',
+                no_items: 'Nta kintu urashyiraho.',
+                authorized_albums: 'Albamu wemerewe',
+                authorized_choirs: 'Korali wemerewe',
+                upload_btn: 'Shyiraho ikintu'
             }
         }
     },
@@ -351,7 +383,8 @@ const resources = {
                 gallery: 'Galerie',
                 news: 'Actualités',
                 about: 'À propos',
-                login: 'Connexion'
+                login: 'Connexion',
+                my_uploads: 'Mes Téléchargements'
             },
             hero: {
                 welcome: 'Bienvenue à',
@@ -509,7 +542,22 @@ const resources = {
                     error_create: 'Erreur de mise en ligne',
                     error_update: 'Erreur de mise à jour',
                     error_delete: 'Erreur de suppression'
+                },
+                permissions: {
+                    title: 'Autorisations',
+                    grant: 'Accorder',
+                    revoke: 'Révoquer',
+                    authorized_users: 'Utilisateurs autorisés'
                 }
+            },
+            my_uploads: {
+                title: 'Mes',
+                span: 'Téléchargements',
+                subtitle: 'Gérez les éléments que vous êtes autorisé à mettre en ligne.',
+                no_items: 'Aucun élément téléchargé par vous.',
+                authorized_albums: 'Albums autorisés',
+                authorized_choirs: 'Chorales autorisées',
+                upload_btn: 'Télécharger'
             }
         }
     }

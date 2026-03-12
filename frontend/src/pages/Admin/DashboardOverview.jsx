@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Users, Calendar, Music, Image as ImageIcon, Megaphone, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import API_BASE from '../../api';
 
 const DashboardOverview = () => {
     const { t } = useTranslation();
@@ -9,10 +10,10 @@ const DashboardOverview = () => {
         queryKey: ['admin-stats'],
         queryFn: async () => {
             const [events, choirs, gallery, announcements] = await Promise.all([
-                axios.get('http://localhost:5000/api/events'),
-                axios.get('http://localhost:5000/api/choirs'),
-                axios.get('http://localhost:5000/api/gallery'),
-                axios.get('http://localhost:5000/api/announcements')
+                axios.get(`${API_BASE}/api/events`),
+                axios.get(`${API_BASE}/api/choirs`),
+                axios.get(`${API_BASE}/api/gallery`),
+                axios.get(`${API_BASE}/api/announcements`)
             ]);
 
             return {

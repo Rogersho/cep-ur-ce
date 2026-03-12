@@ -5,8 +5,8 @@ const { protect, adminOnly } = require('../middleware/auth');
 const upload = require('../utils/upload');
 
 router.get('/', getGalleryItems);
-router.post('/', protect, adminOnly, upload.single('image'), addGalleryItem);
-router.put('/:id', protect, adminOnly, upload.single('image'), updateGalleryItem);
-router.delete('/:id', protect, adminOnly, deleteGalleryItem);
+router.post('/', protect, upload.single('image'), addGalleryItem);
+router.put('/:id', protect, upload.single('image'), updateGalleryItem);
+router.delete('/:id', protect, deleteGalleryItem);
 
 module.exports = router;

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Plus, Trash2, Calendar, MapPin, Clock, Image as ImageIcon, X, CheckCircle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { useTranslation } from 'react-i18next';
+import API_BASE from '../../api';
 
 const ManageEvents = () => {
     const { t } = useTranslation();
@@ -25,7 +26,7 @@ const ManageEvents = () => {
     const { data: events, isLoading } = useQuery({
         queryKey: ['admin-events'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:5000/api/events');
+            const res = await axios.get(`${API_BASE}/api/events`);
             return res.data;
         }
     });
@@ -48,7 +49,7 @@ const ManageEvents = () => {
             });
             if (image) data.append('image', image);
 
-            return axios.post('http://localhost:5000/api/events', data, {
+            return axios.post(`${API_BASE}/api/events`, data, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -82,7 +83,7 @@ const ManageEvents = () => {
             });
             if (image) data.append('image', image);
 
-            return axios.put(`http://localhost:5000/api/events/${editId}`, data, {
+            return axios.put(`${API_BASE}/api/events/${editId}`, data, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
         },
@@ -101,7 +102,7 @@ const ManageEvents = () => {
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
             const token = localStorage.getItem('token');
-            return axios.delete(`http://localhost:5000/api/events/${id}`, {
+            return axios.delete(`${API_BASE}/api/events/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
         },
@@ -163,74 +164,89 @@ const ManageEvents = () => {
             </div>
 
             {showForm && (
-                <div className="glass" style={{ padding: '2rem', borderRadius: 'var(--radius)', marginBottom: '3rem' }}>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-main)' }}>
-                        {isEditing ? t('admin.events.edit_title') : t('admin.events.new_title')}
-                    </h2>
-                    <form onSubmit={handleSubmit} className="admin-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                        <div className="form-full" style={{ gridColumn: 'span 2' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_title')}</label>
-                            <input
-                                type="text"
-                                required
-                                value={formData.title}
-                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            />
-                        </div>
+                <div style={{
+                    position: 'fixed',
+                    top: 0, left: 0, width: '100%', height: '100%',
+                    background: 'rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(4px)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 2000,
+                    padding: '1rem'
+                }}>
+                    <div className="glass" style={{ width: '100%', maxWidth: '750px', padding: '2rem', borderRadius: 'var(--radius)', position: 'relative', background: 'var(--card-bg)', maxHeight: '90vh', overflowY: 'auto' }}>
+                        <button onClick={() => { setShowForm(false); resetForm(); }} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', color: 'var(--text-muted)' }}>
+                            <X size={24} />
+                        </button>
+                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-main)' }}>
+                            {isEditing ? t('admin.events.edit_title') : t('admin.events.new_title')}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="admin-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                            <div className="form-full" style={{ gridColumn: 'span 2' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_title')}</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={formData.title}
+                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                />
+                            </div>
 
-                        <div className="form-half">
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_date')}</label>
-                            <input
-                                type="datetime-local"
-                                required
-                                value={formData.date}
-                                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            />
-                        </div>
+                            <div className="form-half">
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_date')}</label>
+                                <input
+                                    type="datetime-local"
+                                    required
+                                    value={formData.date}
+                                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                />
+                            </div>
 
-                        <div className="form-half">
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_location')}</label>
-                            <input
-                                type="text"
-                                required
-                                value={formData.location}
-                                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            />
-                        </div>
+                            <div className="form-half">
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_location')}</label>
+                                <input
+                                    type="text"
+                                    required
+                                    value={formData.location}
+                                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                />
+                            </div>
 
-                        <div className="form-full" style={{ gridColumn: 'span 2' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_desc')}</label>
-                            <textarea
-                                required
-                                rows="3"
-                                value={formData.description}
-                                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)', resize: 'none' }}
-                            />
-                        </div>
+                            <div className="form-full" style={{ gridColumn: 'span 2' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_desc')}</label>
+                                <textarea
+                                    required
+                                    rows="3"
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)', resize: 'none' }}
+                                />
+                            </div>
 
-                        <div className="form-full">
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_image')}</label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileUpload}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
-                            />
-                        </div>
+                            <div className="form-full" style={{ gridColumn: 'span 2' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>{t('admin.events.field_image')}</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileUpload}
+                                    style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
+                                />
+                            </div>
 
-                        <div className="form-full" style={{ display: 'flex', alignItems: 'flex-end' }}>
-                            <button type="submit" className="btn-primary" style={{ width: '100%', padding: '0.875rem' }} disabled={createMutation.isLoading || updateMutation.isLoading}>
-                                {isEditing ?
-                                    (updateMutation.isLoading ? t('admin.common.loading') : t('admin.common.update')) :
-                                    (createMutation.isLoading ? t('admin.common.loading') : t('admin.common.add'))
-                                }
-                            </button>
-                        </div>
-                    </form>
+                            <div className="form-full" style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'flex-end', marginTop: '1rem' }}>
+                                <button type="submit" className="btn-primary" style={{ width: '100%', padding: '0.875rem' }} disabled={createMutation.isLoading || updateMutation.isLoading}>
+                                    {isEditing ?
+                                        (updateMutation.isLoading ? t('admin.common.loading') : t('admin.common.update')) :
+                                        (createMutation.isLoading ? t('admin.common.loading') : t('admin.common.add'))
+                                    }
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
 
@@ -253,7 +269,7 @@ const ManageEvents = () => {
                                 <tr key={event.id} style={{ borderBottom: '1px solid var(--border)' }}>
                                     <td style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                         <div style={{ width: '50px', height: '50px', borderRadius: '8px', overflow: 'hidden' }}>
-                                            <img src={`http://localhost:5000${event.image_url}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            <img src={event.image_url?.startsWith('http') ? event.image_url : `${API_BASE}${event.image_url}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                         </div>
                                         <span style={{ fontWeight: 600 }}>{event.title}</span>
                                     </td>

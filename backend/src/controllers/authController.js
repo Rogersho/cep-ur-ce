@@ -60,4 +60,42 @@ const loginUser = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc    Get all users
+// @route   GET /api/auth/users
+// @access  Private/Admin
+const getAllUsers = async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT id, username, email, role FROM users ORDER BY username ASC');
+        res.status(200).json(rows);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error: error.message });
+    }
+};
+
+const getMyPermissions = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        
+        // If admin, they have permission to everything, but we can't easily list "everything" efficiently here
+        // Usually we just return empty lists and the frontend handles "is admin" logic
+        if (req.user.role === 'admin') {
+            return res.json({ albums: [], choirs: [], isAdmin: true });
+        }
+
+        const [albums] = await pool.query(
+            'SELECT a.id, a.title FROM album_permissions ap JOIN albums a ON ap.album_id = a.id WHERE ap.user_id = ?',
+            [userId]
+        );
+
+        const [choirs] = await pool.query(
+            'SELECT c.id, c.name FROM choir_permissions cp JOIN choirs c ON cp.choir_id = c.id WHERE cp.user_id = ?',
+            [userId]
+        );
+
+        res.json({ albums, choirs, isAdmin: false });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching my permissions', error: error.message });
+    }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers, getMyPermissions };

@@ -30,7 +30,7 @@ const getEventById = async (req, res) => {
 // @access  Private/Admin
 const createEvent = async (req, res) => {
     const { title, description, date, location, category } = req.body;
-    let image_url = req.file ? `/uploads/${req.file.filename}` : null;
+    let image_url = req.file ? req.file.path : null;
 
     try {
         const [result] = await pool.execute(
@@ -53,7 +53,7 @@ const updateEvent = async (req, res) => {
 
     if (req.file) {
         updateQuery += ', image_url=?';
-        updateParams.push(`/uploads/${req.file.filename}`);
+        updateParams.push(req.file.path);
     }
 
     updateQuery += ' WHERE id=?';

@@ -53,7 +53,6 @@ const Footer = () => {
                         <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             <FooterLink to="/gallery" label={t('nav.gallery')} />
                             <FooterLink to="/announcements" label="Announcements" />
-                            <FooterLink to="/login" label={t('nav.login')} />
                         </ul>
                     </div>
 
@@ -82,14 +81,35 @@ const Footer = () => {
                     borderTop: '1px solid var(--border)',
                     paddingTop: '2rem',
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
                     flexWrap: 'wrap',
                     gap: '1rem',
                     color: 'var(--text-muted)',
                     fontSize: '0.85rem'
                 }}>
-                    <p>&copy; {new Date().getFullYear()} CEP UR-CE Rukara Campus. All rights reserved.</p>
+                    <p style={{ margin: 0 }}>&copy; {new Date().getFullYear()} CEP UR-CE Rukara Campus. All rights reserved.</p>
+
+                    {/* Logo icon linking to admin login — hidden in plain sight */}
+                    <Link
+                        to="/login"
+                        title="Admin Login"
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            opacity: 0.45,
+                            transition: 'opacity 0.3s ease, transform 0.3s ease'
+                        }}
+                        onMouseOver={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+                        onMouseOut={(e) => { e.currentTarget.style.opacity = '0.45'; e.currentTarget.style.transform = 'scale(1)'; }}
+                    >
+                        <img
+                            src="/cep_logo.jpeg"
+                            alt="CEP"
+                            style={{ width: '34px', height: '34px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--border)' }}
+                        />
+                    </Link>
                 </div>
             </div>
         </footer>

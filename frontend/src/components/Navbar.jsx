@@ -1,7 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink as RouterNavLink } from 'react-router-dom';
 import { Church, Calendar, Music, Image as ImageIcon, Info, User, Languages, Sun, Moon, LogOut, LayoutDashboard, Megaphone, Menu, X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { useState, useEffect } from 'react';
+import API_BASE from '../api';
 
 const Navbar = () => {
     const { t, i18n } = useTranslation();
@@ -9,6 +12,21 @@ const Navbar = () => {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'auto');
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const { data: permissions } = useQuery({
+        queryKey: ['my-permissions', user?.id],
+        queryFn: async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return res.data;
+        },
+        enabled: !!user && user.role !== 'admin'
+    });
+
+    const hasUploadPerms = permissions?.albums?.length > 0 || permissions?.choirs?.length > 0;
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -54,9 +72,12 @@ const Navbar = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center'
             }}>
-                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, fontSize: '1.25rem', color: 'var(--primary)' }}>
-                    <Church size={32} />
-                    <span>CEP UR-CE <span style={{ color: 'var(--text-main)' }}>Rukara</span></span>
+                <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: 700, fontSize: '1.25rem', color: 'var(--primary)' }}>
+                    <img src="/cep_logo.jpeg" alt="CEP Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--primary)' }} />
+                    <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+                        <span style={{ fontSize: '1.1rem' }}>CEP UR-CE</span>
+                        <span style={{ color: 'var(--text-main)', fontSize: '0.85rem' }}>Rukara</span>
+                    </span>
                 </Link>
 
                 {/* Mobile Menu Toggle */}
@@ -118,11 +139,16 @@ const Navbar = () => {
                     </div>
 
                     <div className="nav-auth" style={{ marginLeft: '0.5rem' }}>
-                        {user ? (
+                        {user && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 {user.role === 'admin' && (
                                     <Link to="/admin" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }} onClick={() => setIsMenuOpen(false)}>
-                                        <LayoutDashboard size={18} /> {t('admin.nav.management')}
+                                        <LayoutDashboard size={18} /> {t('admin.title')}
+                                    </Link>
+                                )}
+                                {hasUploadPerms && user.role !== 'admin' && (
+                                    <Link to="/my-uploads" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }} onClick={() => setIsMenuOpen(false)}>
+                                        <Upload size={18} /> {t('nav.my_uploads')}
                                     </Link>
                                 )}
                                 <div className="user-profile" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -132,10 +158,6 @@ const Navbar = () => {
                                     </button>
                                 </div>
                             </div>
-                        ) : (
-                            <Link to="/login" className="btn-primary" style={{ padding: '0.5rem 1.25rem' }} onClick={() => setIsMenuOpen(false)}>
-                                <User size={18} /> {t('nav.login')}
-                            </Link>
                         )}
                     </div>
                 </ul>
@@ -182,17 +204,23 @@ const Navbar = () => {
 
 const NavLink = ({ to, icon, label, onClick }) => (
     <li style={{ width: '100%' }}>
-        <Link to={to} onClick={onClick} style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            fontWeight: 500,
-            fontSize: '0.95rem',
-            color: 'var(--text-main)',
-            padding: '0.5rem 0'
-        }}>
+        <RouterNavLink
+            to={to}
+            onClick={onClick}
+            style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontWeight: isActive ? 700 : 500,
+                fontSize: '0.95rem',
+                color: isActive ? 'var(--primary)' : 'var(--text-main)',
+                padding: '0.5rem 0',
+                borderBottom: isActive ? '2px solid var(--primary)' : '2px solid transparent',
+                transition: 'all 0.3s ease'
+            })}
+        >
             {icon} {label}
-        </Link>
+        </RouterNavLink>
     </li>
 );
 

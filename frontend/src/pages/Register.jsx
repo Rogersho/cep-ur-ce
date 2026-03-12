@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { User, Mail, Lock, UserPlus, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import API_BASE from '../api';
 
 const Register = () => {
     const { t } = useTranslation();
@@ -25,7 +26,7 @@ const Register = () => {
 
         setLoading(true);
         try {
-            await axios.post('http://localhost:5000/api/auth/register', {
+            await axios.post(`${API_BASE}/api/auth/register`, {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password

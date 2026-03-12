@@ -10,25 +10,32 @@ const Home = () => {
         <div className="home-page">
             {/* Hero Section */}
             <section className="hero-section" style={{
-                background: 'linear-gradient(135deg, var(--secondary) 0%, var(--background) 100%)',
-                padding: '6rem 0',
+                position: 'relative',
+                background: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("/cep_img1.jpeg")',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: '8rem 0',
                 textAlign: 'center',
+                color: 'white',
+                minHeight: '80vh',
+                display: 'flex',
+                alignItems: 'center',
                 transition: 'var(--transition)'
             }}>
-                <div className="container">
+                <div className="container" style={{ position: 'relative', zIndex: 2 }}>
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="hero-title"
-                        style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', color: 'var(--text-main)' }}
+                        style={{ fontSize: '3.5rem', fontWeight: 800, marginBottom: '1.5rem', textShadow: '2px 2px 10px rgba(0,0,0,0.5)' }}
                     >
-                        {t('hero.welcome')} <span style={{ color: 'var(--primary)' }}>CEP UR-CE</span> <br /> {t('hero.rukara')}
+                        {t('hero.welcome')} <span style={{ color: 'var(--primary-light, #38bdf8)' }}>CEP UR-CE</span> <br /> {t('hero.rukara')}
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '700px', margin: '0 auto 2.5rem' }}
+                        style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.9)', maxWidth: '750px', margin: '0 auto 2.5rem', textShadow: '1px 1px 5px rgba(0,0,0,0.5)' }}
                     >
                         {t('hero.subtitle')}
                     </motion.p>

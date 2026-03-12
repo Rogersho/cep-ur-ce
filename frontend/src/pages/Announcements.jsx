@@ -1,22 +1,28 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Megaphone, Calendar, AlertCircle } from 'lucide-react';
-
+import { Megaphone, Calendar, AlertCircle, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import API_BASE from '../api';
 
 const Announcements = () => {
     const { t } = useTranslation();
     const { data: announcements, isLoading, error } = useQuery({
         queryKey: ['announcements'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:5000/api/announcements');
+            const response = await axios.get(`${API_BASE}/api/announcements`);
             return response.data;
         }
     });
 
-    if (isLoading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>{t('announcements.loading')}</div>;
+    const [search, setSearch] = useState('');
 
-    const items = announcements || [];
+    if (isLoading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>{t('admin.common.loading')}</div>;
+
+    const items = (announcements || []).filter(item => 
+        item.title.toLowerCase().includes(search.toLowerCase()) || 
+        item.content.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
         <div className="announcements-page" style={{
@@ -26,7 +32,27 @@ const Announcements = () => {
             transition: 'var(--transition)'
         }}>
             <div className="container" style={{ maxWidth: '800px' }}>
-                <h1 className="section-title" style={{ color: 'var(--text-main)' }}>{t('announcements.title')} <span>{t('announcements.span')}</span></h1>
+                <div style={{ marginBottom: '3rem', position: 'relative' }}>
+                    <Search style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={20} />
+                    <input
+                        type="text"
+                        placeholder="Search announcements..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        style={{
+                            width: '100%',
+                            padding: '1rem 3rem',
+                            borderRadius: '50px',
+                            border: '1px solid var(--border)',
+                            background: 'var(--card-bg)',
+                            color: 'var(--text-main)',
+                            fontSize: '1rem',
+                            outline: 'none',
+                            boxShadow: 'var(--shadow-sm)',
+                            transition: 'all 0.3s'
+                        }}
+                    />
+                </div>
 
                 {items.length === 0 ? (
                     <div className="glass" style={{ textAlign: 'center', padding: '4rem', borderRadius: 'var(--radius)' }}>

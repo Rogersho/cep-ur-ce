@@ -8,6 +8,7 @@ import Gallery from './pages/Gallery';
 import Announcements from './pages/Announcements';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import MyUploads from './pages/MyUploads';
 
 // Admin Imports
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
@@ -17,6 +18,7 @@ import ManageEvents from './pages/Admin/ManageEvents';
 import ManageGallery from './pages/Admin/ManageGallery';
 import ManageAnnouncements from './pages/Admin/ManageAnnouncements';
 import ManageChoirs from './pages/Admin/ManageChoirs';
+import ManageAlbums from './pages/Admin/ManageAlbums';
 
 function App() {
     return (
@@ -35,6 +37,7 @@ function App() {
                                 <Route path="/announcements" element={<Announcements />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/register" element={<Register />} />
+                                <Route path="/my-uploads" element={<MyUploads />} />
                             </Routes>
                         </main>
                         <Footer />
@@ -46,6 +49,7 @@ function App() {
                     <Route element={<AdminLayout />}>
                         <Route index element={<DashboardOverview />} />
                         <Route path="events" element={<ManageEvents />} />
+                        <Route path="albums" element={<ManageAlbums />} />
                         <Route path="gallery" element={<ManageGallery />} />
                         <Route path="announcements" element={<ManageAnnouncements />} />
                         <Route path="choirs" element={<ManageChoirs />} />
