@@ -22,9 +22,7 @@ const ManageCommittee = () => {
     });
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
-    }
+
 
     const { data: members, isLoading } = useQuery({
         queryKey: ['admin-committee'],
@@ -75,6 +73,10 @@ const ManageCommittee = () => {
             addToast(t('admin.committee.success_delete'), 'success');
         }
     });
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const resetForm = () => {
         setFormData({

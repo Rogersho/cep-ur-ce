@@ -15,10 +15,6 @@ const ManageChoirs = () => {
     const [showForm, setShowForm] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!['system_admin', 'cep_admin', 'choir_header'].includes(user?.role)) {
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
-    }
-
     const isFullAdmin = ['system_admin', 'cep_admin'].includes(user?.role);
 
     const { data: myPerms } = useQuery({
@@ -32,6 +28,7 @@ const ManageChoirs = () => {
         },
         enabled: !!user
     });
+
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -75,6 +72,10 @@ const ManageChoirs = () => {
         },
         enabled: !!selectedChoir
     });
+
+    if (!['system_admin', 'cep_admin', 'choir_header'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const createMutation = useMutation({
         mutationFn: async (newChoir) => {
@@ -319,6 +320,7 @@ const ManageChoirs = () => {
                                 style={{ color: 'var(--primary)', background: 'none', padding: '0.25rem' }}
                                 title="Edit"
                             >
+                                <plus size={18} />
                                 <Music size={18} />
                             </button>
                             {isFullAdmin && (

@@ -21,9 +21,7 @@ const ManageAbout = () => {
     });
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
-    }
+
 
     const { data: sections, isLoading } = useQuery({
         queryKey: ['admin-about'],
@@ -69,6 +67,10 @@ const ManageAbout = () => {
             addToast(t('admin.about.success_delete'), 'success');
         }
     });
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const resetForm = () => {
         setFormData({

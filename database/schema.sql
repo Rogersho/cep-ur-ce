@@ -138,4 +138,4 @@ CREATE TABLE IF NOT EXISTS committee_members (
 -- Insert Default Admin (Password: admin123 - hashed later in implementation)
 -- Tip: Use the dashboard to create first real admin or manually update this record with hashed pass.
 INSERT INTO users (username, email, password, role) 
-VALUES ('admin', 'admin@ceprukaracampus.org', '$2b$10$w6D8G0wV33T39S3d5/Q/vO6W06r8vP/eT73eJ7X7oB.R.F.3.J.m.C', 'admin');
+VALUES ('admin', 'admin@ceprukaracampus.org', '$2b$10$w6D8G0wV33T39S3d5/Q/vO6W06r8vP/eT73eJ7X7oB.R.F.3.J.m.C', 'system_admin');

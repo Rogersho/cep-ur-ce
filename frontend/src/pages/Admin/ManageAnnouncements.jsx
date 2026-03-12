@@ -15,9 +15,7 @@ const ManageAnnouncements = () => {
     const [showForm, setShowForm] = useState(false);
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
-        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
-    }
+
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -81,6 +79,10 @@ const ManageAnnouncements = () => {
         },
         onError: () => addToast(t('admin.news.error_delete'), 'error')
     });
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const handleEdit = (ann) => {
         setFormData({

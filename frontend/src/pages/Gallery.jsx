@@ -56,6 +56,21 @@ const Gallery = () => {
         retry: false
     });
 
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    // Check if user has ANY upload permissions (admin or special perm)
+    const { data: myPerms } = useQuery({
+        queryKey: ['my-permissions'],
+        queryFn: async () => {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return res.data;
+        },
+        enabled: !!user
+    });
+
     const filtered = useMemo(() => {
         const items = gallery || [];
         return items.filter(item => {
@@ -82,21 +97,7 @@ const Gallery = () => {
     if (isLoading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>{t('gallery.loading')}</div>;
 
     const currentChoirName = activeChoir !== 'all' ? choirs?.find(c => String(c.id) === String(activeChoir))?.name : null;
-    const user = JSON.parse(localStorage.getItem('user'));
     
-    // Check if user has ANY upload permissions (admin or special perm)
-    const { data: myPerms } = useQuery({
-        queryKey: ['my-permissions'],
-        queryFn: async () => {
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            return res.data;
-        },
-        enabled: !!user
-    });
-
     const hasUploadPrivilege = user && (
         ['system_admin', 'cep_admin'].includes(user.role) ||
         (activeChoir !== 'all' && (user.role === 'choir_header' || myPerms?.choirs?.some(c => String(c.id) === String(activeChoir)))) ||
