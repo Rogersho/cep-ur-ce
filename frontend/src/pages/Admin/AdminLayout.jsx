@@ -12,7 +12,8 @@ import {
     Sun,
     Moon,
     Languages,
-    FolderOpen
+    FolderOpen,
+    Info
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
