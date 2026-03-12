@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const committeeController = require('../controllers/committeeController');
-const { verifyToken, isAdmin } = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const { protect, adminOnly } = require('../middleware/auth');
+const upload = require('../utils/upload');
 
 router.get('/', committeeController.getMembers);
-router.post('/', verifyToken, isAdmin, upload.single('image'), committeeController.createMember);
-router.put('/:id', verifyToken, isAdmin, upload.single('image'), committeeController.updateMember);
-router.delete('/:id', verifyToken, isAdmin, committeeController.deleteMember);
+router.post('/', protect, adminOnly, upload.single('image'), committeeController.createMember);
+router.put('/:id', protect, adminOnly, upload.single('image'), committeeController.updateMember);
+router.delete('/:id', protect, adminOnly, committeeController.deleteMember);
 
 module.exports = router;

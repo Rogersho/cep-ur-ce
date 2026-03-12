@@ -43,18 +43,59 @@ CREATE TABLE IF NOT EXISTS announcements (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. Galleries Table (Choir-specific or community-wide)
+-- 5. Albums Table
+CREATE TABLE IF NOT EXISTS albums (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    cover_image VARCHAR(255),
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- 6. Galleries Table
 CREATE TABLE IF NOT EXISTS galleries (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    album_id INT DEFAULT NULL,
     choir_id INT DEFAULT NULL,
     title VARCHAR(255),
     image_path VARCHAR(255) NOT NULL,
     media_type ENUM('image', 'video') DEFAULT 'image',
+    uploaded_by INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (choir_id) REFERENCES choirs(id) ON DELETE SET NULL
+    FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE SET NULL,
+    FOREIGN KEY (choir_id) REFERENCES choirs(id) ON DELETE SET NULL,
+    FOREIGN KEY (uploaded_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- 6. Service Schedules Table
+-- 7. Album Permissions
+CREATE TABLE IF NOT EXISTS album_permissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    album_id INT NOT NULL,
+    user_id INT NOT NULL,
+    granted_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (granted_by) REFERENCES users(id) ON DELETE SET NULL,
+    UNIQUE KEY (album_id, user_id)
+);
+
+-- 8. Choir Permissions
+CREATE TABLE IF NOT EXISTS choir_permissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    choir_id INT NOT NULL,
+    user_id INT NOT NULL,
+    granted_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (choir_id) REFERENCES choirs(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (granted_by) REFERENCES users(id) ON DELETE SET NULL,
+    UNIQUE KEY (choir_id, user_id)
+);
+
+-- 9. Service Schedules Table
 CREATE TABLE IF NOT EXISTS service_schedules (
     id INT AUTO_INCREMENT PRIMARY KEY,
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
@@ -64,7 +105,7 @@ CREATE TABLE IF NOT EXISTS service_schedules (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. About Sections Table
+-- 10. About Sections Table
 CREATE TABLE IF NOT EXISTS about_sections (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title_en VARCHAR(255),
@@ -79,7 +120,7 @@ CREATE TABLE IF NOT EXISTS about_sections (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- 8. Committee Members Table
+-- 11. Committee Members Table
 CREATE TABLE IF NOT EXISTS committee_members (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
