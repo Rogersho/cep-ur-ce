@@ -11,7 +11,7 @@ const {
     uploadToAlbum
 } = require('../controllers/albumController');
 const { protect, adminOnly } = require('../middleware/auth');
-const upload = require('../utils/upload');
+const upload = require('../middleware/upload');
 
 // Public routes
 router.get('/', getAlbums);
