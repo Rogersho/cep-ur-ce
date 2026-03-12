@@ -12,6 +12,11 @@ const ManageEvents = () => {
     const { addToast } = useToast();
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
         title: '',

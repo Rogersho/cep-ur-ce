@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
-import { Image as ImageIcon, Maximize2, Search, X, ChevronLeft, ChevronRight, Music } from 'lucide-react';
+import { Image as ImageIcon, Maximize2, Search, X, ChevronLeft, ChevronRight, Music, Upload } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../api';
@@ -82,6 +82,26 @@ const Gallery = () => {
     if (isLoading) return <div className="container" style={{ padding: '4rem 0', textAlign: 'center' }}>{t('gallery.loading')}</div>;
 
     const currentChoirName = activeChoir !== 'all' ? choirs?.find(c => String(c.id) === String(activeChoir))?.name : null;
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    // Check if user has ANY upload permissions (admin or special perm)
+    const { data: myPerms } = useQuery({
+        queryKey: ['my-permissions'],
+        queryFn: async () => {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return res.data;
+        },
+        enabled: !!user
+    });
+
+    const hasUploadPrivilege = user && (
+        ['system_admin', 'cep_admin', 'choir_header'].includes(user.role) ||
+        myPerms?.choirs?.length > 0 ||
+        myPerms?.albums?.length > 0
+    );
 
     return (
         <div className="gallery-page" style={{
@@ -113,6 +133,18 @@ const Gallery = () => {
                         </button>
                     </div>
                 )}
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div>
+                        <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--text-main)', marginBottom: '0.5rem' }}>{t('nav.gallery')}</h1>
+                        <p style={{ color: 'var(--text-muted)' }}>Explore our community moments through photos and videos.</p>
+                    </div>
+                    {hasUploadPrivilege && (
+                        <Link to="/admin/gallery" className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', textDecoration: 'none' }}>
+                            <Upload size={20} /> {t('admin.gallery.add_btn')}
+                        </Link>
+                    )}
+                </div>
 
                 {/* ── Filter / Search Bar ── */}
                 <div style={{

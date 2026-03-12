@@ -9,8 +9,10 @@ const ProtectedAdminRoute = () => {
         return <Navigate to="/login" replace />;
     }
 
-    // Only admins can access the admin section
-    if (user.role !== 'admin') {
+    // Allowed roles for admin section
+    const allowedRoles = ['system_admin', 'cep_admin', 'choir_header'];
+
+    if (!allowedRoles.includes(user.role)) {
         return <Navigate to="/my-uploads" replace />;
     }
 

@@ -20,6 +20,11 @@ const ManageCommittee = () => {
         position: '', bio: '', year_range: '',
         order_index: 0
     });
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const { data: members, isLoading } = useQuery({
         queryKey: ['admin-committee'],
@@ -60,7 +65,7 @@ const ManageCommittee = () => {
     const deleteMutation = useMutation({
         mutationFn: async (id) => {
             const token = localStorage.getItem('token');
-            if (!window.confirm('Are you sure you want to delete this member?')) return;
+            if (!window.confirm(t('admin.common.confirm_delete'))) return;
             return axios.delete(`${API_BASE}/api/committee/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });

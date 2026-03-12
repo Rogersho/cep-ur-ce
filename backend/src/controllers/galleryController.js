@@ -22,7 +22,7 @@ const addGalleryItem = async (req, res) => {
 
     try {
         // Permission Check
-        if (req.user.role !== 'admin') {
+        if (!['system_admin', 'cep_admin'].includes(req.user.role)) {
             let hasPerm = false;
             
             if (choir_id) {
@@ -40,7 +40,11 @@ const addGalleryItem = async (req, res) => {
             }
         }
 
-        const isVideo = req.file?.mimetype.startsWith('video/');
+        if (!req.file) {
+            return res.status(400).json({ message: 'Please upload a file' });
+        }
+
+        const isVideo = req.file?.mimetype?.startsWith('video/');
         const mediaType = isVideo ? 'video' : 'image';
 
         const [result] = await pool.execute(
@@ -49,6 +53,7 @@ const addGalleryItem = async (req, res) => {
         );
         res.status(201).json({ id: result.insertId, title, image_path, choir_id, album_id, media_type: mediaType });
     } catch (error) {
+        console.error('Gallery upload error:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -65,7 +70,7 @@ const deleteGalleryItem = async (req, res) => {
         const item = items[0];
 
         // Permission Check
-        if (req.user.role !== 'admin' && item.uploaded_by !== userId) {
+        if (!['system_admin', 'cep_admin'].includes(req.user.role) && item.uploaded_by !== userId) {
             let hasPerm = false;
             if (item.choir_id) {
                 const [cp] = await pool.query('SELECT id FROM choir_permissions WHERE choir_id = ? AND user_id = ?', [item.choir_id, userId]);
@@ -96,7 +101,7 @@ const updateGalleryItem = async (req, res) => {
         if (items.length === 0) return res.status(404).json({ message: 'Item not found' });
         const item = items[0];
 
-        if (req.user.role !== 'admin' && item.uploaded_by !== userId) {
+        if (!['system_admin', 'cep_admin'].includes(req.user.role) && item.uploaded_by !== userId) {
             let hasPerm = false;
             if (item.choir_id) {
                 const [cp] = await pool.query('SELECT id FROM choir_permissions WHERE choir_id = ? AND user_id = ?', [item.choir_id, userId]);

@@ -18,11 +18,19 @@ const protect = (req, res, next) => {
 };
 
 const adminOnly = (req, res, next) => {
-    if (req.user && req.user.role === 'admin') {
+    if (req.user && (req.user.role === 'system_admin' || req.user.role === 'cep_admin')) {
         next();
     } else {
         res.status(403).json({ message: 'Not authorized as admin' });
     }
 };
 
-module.exports = { protect, adminOnly };
+const systemAdminOnly = (req, res, next) => {
+    if (req.user && req.user.role === 'system_admin') {
+        next();
+    } else {
+        res.status(403).json({ message: 'Not authorized as system admin' });
+    }
+};
+
+module.exports = { protect, adminOnly, systemAdminOnly };

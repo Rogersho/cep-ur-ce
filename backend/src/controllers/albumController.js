@@ -66,12 +66,9 @@ const deleteAlbum = async (req, res) => {
     }
 };
 
-// @desc    Get permissions for an album
-// @route   GET /api/albums/:id/permissions
-// @access  Private/Admin
 const getAlbumPermissions = async (req, res) => {
     try {
-        const [rows] = await pool.query(
+        const [rows] = await pool.execute(
             'SELECT ap.id, ap.user_id, u.username, u.email FROM album_permissions ap JOIN users u ON ap.user_id = u.id WHERE ap.album_id = ?',
             [req.params.id]
         );
@@ -90,10 +87,10 @@ const grantAlbumPermission = async (req, res) => {
         const albumId = req.params.id;
 
         // Ensure user exists
-        const [userRows] = await pool.query('SELECT id FROM users WHERE id = ?', [userId]);
+        const [userRows] = await pool.execute('SELECT id FROM users WHERE id = ?', [userId]);
         if (userRows.length === 0) return res.status(404).json({ message: 'User not found' });
 
-        await pool.query(
+        await pool.execute(
             'INSERT IGNORE INTO album_permissions (album_id, user_id, granted_by) VALUES (?, ?, ?)',
             [albumId, userId, req.user.id]
         );
@@ -108,7 +105,7 @@ const grantAlbumPermission = async (req, res) => {
 // @access  Private/Admin
 const revokeAlbumPermission = async (req, res) => {
     try {
-        await pool.query(
+        await pool.execute(
             'DELETE FROM album_permissions WHERE album_id = ? AND user_id = ?',
             [req.params.id, req.params.userId]
         );
@@ -131,7 +128,7 @@ const uploadToAlbum = async (req, res) => {
         if (albumRows.length === 0) return res.status(404).json({ message: 'Album not found' });
 
         // 2. Check Permissions. User is either admin, or exists in album_permissions table
-        if (req.user.role !== 'admin') {
+        if (!['system_admin', 'cep_admin'].includes(req.user.role)) {
             const [permRows] = await pool.query('SELECT id FROM album_permissions WHERE album_id = ? AND user_id = ?', [albumId, userId]);
             if (permRows.length === 0) {
                 return res.status(403).json({ message: 'You do not have permission to upload to this album.' });
@@ -144,19 +141,19 @@ const uploadToAlbum = async (req, res) => {
         const imagePath = req.file.path;
         const title = req.body.title || 'Untitled';
 
-        // Check for video (basic check based on extension/mimetype)
-        const isVideo = req.file.mimetype.startsWith('video/');
+        const isVideo = req.file?.mimetype?.startsWith('video/');
         const mediaType = isVideo ? 'video' : 'image';
 
         // 4. Save to galleries table
-        const [result] = await pool.query(
-            'INSERT INTO galleries (album_id, title, image_path, media_type, uploaded_by) VALUES (?, ?, ?, ?, ?)',
-            [albumId, title, imagePath, mediaType, userId]
+        const [result] = await pool.execute(
+            'INSERT INTO galleries (album_id, choir_id, title, image_path, media_type, uploaded_by) VALUES (?, ?, ?, ?, ?, ?)',
+            [albumId, req.body.choir_id || null, title, imagePath, mediaType, userId]
         );
 
         res.status(201).json({
             id: result.insertId,
             album_id: albumId,
+            choir_id: req.body.choir_id || null,
             title,
             image_path: imagePath,
             media_type: mediaType,
@@ -164,6 +161,7 @@ const uploadToAlbum = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('Gallery upload error:', error);
         res.status(500).json({ message: 'Error uploading to album', error: error.message });
     }
 };

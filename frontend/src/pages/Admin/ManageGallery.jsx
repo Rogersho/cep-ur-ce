@@ -24,6 +24,20 @@ const ManageGallery = () => {
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const user = JSON.parse(localStorage.getItem('user'));
 
+    const { data: myPerms } = useQuery({
+        queryKey: ['my-permissions'],
+        queryFn: async () => {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return res.data;
+        },
+        enabled: !!user
+    });
+
+    const isFullAdmin = ['system_admin', 'cep_admin'].includes(user?.role);
+
     const { data: gallery, isLoading } = useQuery({
         queryKey: ['admin-gallery'],
         queryFn: async () => {
@@ -94,7 +108,10 @@ const ManageGallery = () => {
             setFormData({ title: '', album_id: '', choir_id: '' });
             setImage(null);
         },
-        onError: () => addToast(t('admin.gallery.error_create'), 'error')
+        onError: (error) => {
+            const msg = error.response?.data?.error || error.response?.data?.message || t('admin.gallery.error_create');
+            addToast(msg, 'error');
+        }
     });
 
     const updateMutation = useMutation({
@@ -103,6 +120,7 @@ const ManageGallery = () => {
             const data = new FormData();
             data.append('title', updatedPhoto.title);
             if (updatedPhoto.choir_id) data.append('choir_id', updatedPhoto.choir_id);
+            if (updatedPhoto.album_id) data.append('album_id', updatedPhoto.album_id);
             if (image) data.append('image', image);
 
             return axios.put(`${API_BASE}/api/gallery/${editId}`, data, {
@@ -134,6 +152,14 @@ const ManageGallery = () => {
         },
         onError: () => addToast(t('admin.gallery.error_delete'), 'error')
     });
+
+    const canManageItem = (item) => {
+        if (isFullAdmin) return true;
+        if (item.uploaded_by === user.id) return true;
+        if (item.choir_id && myPerms?.choirs?.some(c => c.id === item.choir_id)) return true;
+        if (item.album_id && myPerms?.albums?.some(a => a.id === item.album_id)) return true;
+        return false;
+    };
 
     const handleEdit = (photo) => {
         setFormData({ 
@@ -204,7 +230,7 @@ const ManageGallery = () => {
                                 />
                             </div>
 
-                            {!isEditing && (
+                            {((!isEditing && isFullAdmin) || (myPerms?.albums?.length > 0)) && (
                                 <div>
                                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Album</label>
                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -215,18 +241,26 @@ const ManageGallery = () => {
                                             style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
                                         >
                                             <option value="" disabled={!formData.choir_id}>Select an Album</option>
-                                            {albums?.map(album => (
-                                                <option key={album.id} value={album.id}>{album.title}</option>
-                                            ))}
+                                            {isFullAdmin ? (
+                                                albums?.map(album => (
+                                                    <option key={album.id} value={album.id}>{album.title}</option>
+                                                ))
+                                            ) : (
+                                                myPerms?.albums?.map(album => (
+                                                    <option key={album.id} value={album.id}>{album.title}</option>
+                                                ))
+                                            )}
                                         </select>
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowAlbumModal(true)}
-                                            className="btn-primary"
-                                            style={{ padding: '0 1rem', display: 'flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}
-                                        >
-                                            <Plus size={16} /> New
-                                        </button>
+                                        {isFullAdmin && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowAlbumModal(true)}
+                                                className="btn-primary"
+                                                style={{ padding: '0 1rem', display: 'flex', alignItems: 'center', gap: '0.25rem', whiteSpace: 'nowrap' }}
+                                            >
+                                                <Plus size={16} /> New
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -238,10 +272,16 @@ const ManageGallery = () => {
                                     onChange={(e) => setFormData({ ...formData, choir_id: e.target.value })}
                                     style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--text-main)' }}
                                 >
-                                    <option value="">None / General Community</option>
-                                    {choirs?.map(choir => (
-                                        <option key={choir.id} value={choir.id}>{choir.name}</option>
-                                    ))}
+                                    <option value="">{isFullAdmin ? 'None / General Community' : 'Select your Choir'}</option>
+                                    {isFullAdmin ? (
+                                        choirs?.map(choir => (
+                                            <option key={choir.id} value={choir.id}>{choir.name}</option>
+                                        ))
+                                    ) : (
+                                        myPerms?.choirs?.map(choir => (
+                                            <option key={choir.id} value={choir.id}>{choir.name}</option>
+                                        ))
+                                    )}
                                 </select>
                             </div>
 
@@ -335,14 +375,16 @@ const ManageGallery = () => {
                         <div style={{ padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <p style={{ fontSize: '0.8rem', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{photo.title}</p>
-                                <div style={{ display: 'flex', gap: '0.25rem' }}>
-                                    <button onClick={() => handleEdit(photo)} style={{ color: 'var(--primary)', background: 'none' }}>
-                                        <ImageIcon size={18} />
-                                    </button>
-                                    <button onClick={() => { if (window.confirm(t('admin.common.confirm_delete'))) deleteMutation.mutate(photo.id) }} style={{ color: '#ef4444', background: 'none' }}>
-                                        <Trash2 size={18} />
-                                    </button>
-                                </div>
+                                {canManageItem(photo) && (
+                                    <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                        <button onClick={() => handleEdit(photo)} style={{ color: 'var(--primary)', background: 'none' }}>
+                                            <ImageIcon size={18} />
+                                        </button>
+                                        <button onClick={() => { if (window.confirm(t('admin.common.confirm_delete'))) deleteMutation.mutate(photo.id) }} style={{ color: '#ef4444', background: 'none' }}>
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             {photo.choir_id && (
                                 <span style={{ fontSize: '0.7rem', color: 'var(--primary)', fontWeight: 700 }}>

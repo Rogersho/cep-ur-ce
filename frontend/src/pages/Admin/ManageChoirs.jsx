@@ -13,6 +13,25 @@ const ManageChoirs = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editId, setEditId] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!['system_admin', 'cep_admin', 'choir_header'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
+
+    const isFullAdmin = ['system_admin', 'cep_admin'].includes(user?.role);
+
+    const { data: myPerms } = useQuery({
+        queryKey: ['my-permissions'],
+        queryFn: async () => {
+            const token = localStorage.getItem('token');
+            const res = await axios.get(`${API_BASE}/api/auth/me/permissions`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return res.data;
+        },
+        enabled: !!user
+    });
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -26,8 +45,12 @@ const ManageChoirs = () => {
         queryKey: ['admin-choirs'],
         queryFn: async () => {
             const res = await axios.get(`${API_BASE}/api/choirs`);
-            return res.data;
-        }
+            const allChoirs = res.data;
+            if (isFullAdmin) return allChoirs;
+            // For choir header, filter by their permitted choirs
+            return allChoirs.filter(c => myPerms?.choirs?.some(p => p.id === c.id));
+        },
+        enabled: !!myPerms || isFullAdmin
     });
 
     const { data: users } = useQuery({
@@ -186,14 +209,16 @@ const ManageChoirs = () => {
         <div>
             <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)' }}>Manage <span style={{ color: 'var(--primary)' }}>{t('nav.choirs')}</span></h1>
-                <button
-                    onClick={() => setShowForm(!showForm)}
-                    className="btn-primary"
-                    style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
-                >
-                    {showForm ? <X size={20} /> : <Plus size={20} />}
-                    {showForm ? t('admin.common.cancel') : t('admin.choirs.add_btn')}
-                </button>
+                {isFullAdmin && (
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="btn-primary"
+                        style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                    >
+                        {showForm ? <X size={20} /> : <Plus size={20} />}
+                        {showForm ? t('admin.common.cancel') : t('admin.choirs.add_btn')}
+                    </button>
+                )}
             </div>
 
             {showForm && (
@@ -296,20 +321,24 @@ const ManageChoirs = () => {
                             >
                                 <Music size={18} />
                             </button>
-                            <button
-                                onClick={() => handleOpenPermissions(choir)}
-                                style={{ color: 'var(--primary)', background: 'none', padding: '0.25rem' }}
-                                title="Permissions"
-                            >
-                                <Shield size={18} />
-                            </button>
-                            <button
-                                onClick={() => { if (window.confirm(t('admin.common.confirm_delete'))) deleteMutation.mutate(choir.id) }}
-                                style={{ color: '#ef4444', background: 'none', padding: '0.25rem' }}
-                                title="Delete"
-                            >
-                                <Trash2 size={18} />
-                            </button>
+                            {isFullAdmin && (
+                                <>
+                                    <button
+                                        onClick={() => handleOpenPermissions(choir)}
+                                        style={{ color: 'var(--primary)', background: 'none', padding: '0.25rem' }}
+                                        title="Permissions"
+                                    >
+                                        <Shield size={18} />
+                                    </button>
+                                    <button
+                                        onClick={() => { if (window.confirm(t('admin.common.confirm_delete'))) deleteMutation.mutate(choir.id) }}
+                                        style={{ color: '#ef4444', background: 'none', padding: '0.25rem' }}
+                                        title="Delete"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 ))}

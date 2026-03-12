@@ -55,7 +55,7 @@ const updateChoir = async (req, res) => {
 
 const getChoirPermissions = async (req, res) => {
     try {
-        const [rows] = await pool.query(
+        const [rows] = await pool.execute(
             'SELECT cp.id, cp.user_id, u.username, u.email FROM choir_permissions cp JOIN users u ON cp.user_id = u.id WHERE cp.choir_id = ?',
             [req.params.id]
         );
@@ -70,10 +70,10 @@ const grantChoirPermission = async (req, res) => {
         const { userId } = req.body;
         const choirId = req.params.id;
 
-        const [userRows] = await pool.query('SELECT id FROM users WHERE id = ?', [userId]);
+        const [userRows] = await pool.execute('SELECT id FROM users WHERE id = ?', [userId]);
         if (userRows.length === 0) return res.status(404).json({ message: 'User not found' });
 
-        await pool.query(
+        await pool.execute(
             'INSERT IGNORE INTO choir_permissions (choir_id, user_id, granted_by) VALUES (?, ?, ?)',
             [choirId, userId, req.user.id]
         );
@@ -85,7 +85,7 @@ const grantChoirPermission = async (req, res) => {
 
 const revokeChoirPermission = async (req, res) => {
     try {
-        await pool.query(
+        await pool.execute(
             'DELETE FROM choir_permissions WHERE choir_id = ? AND user_id = ?',
             [req.params.id, req.params.userId]
         );

@@ -6,10 +6,12 @@ import API_BASE from '../../api';
 
 const DashboardOverview = () => {
     const { t } = useTranslation();
+    const user = JSON.parse(localStorage.getItem('user'));
     const { data: stats, isLoading } = useQuery({
         queryKey: ['admin-stats'],
         queryFn: async () => {
-            const [events, choirs, gallery, announcements] = await Promise.all([
+            const token = localStorage.getItem('token');
+            const [events, choirs, gallery, announcements, users] = await Promise.all([
                 axios.get(`${API_BASE}/api/events`),
                 axios.get(`${API_BASE}/api/choirs`),
                 axios.get(`${API_BASE}/api/gallery`),
@@ -21,6 +23,7 @@ const DashboardOverview = () => {
                 choirs: choirs.data.length,
                 gallery: gallery.data.length,
                 announcements: announcements.data.length,
+                users: users.data.length,
                 latestEvents: events.data.slice(0, 5)
             };
         }

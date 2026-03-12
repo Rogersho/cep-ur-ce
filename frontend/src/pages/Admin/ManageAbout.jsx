@@ -19,6 +19,11 @@ const ManageAbout = () => {
         content_en: '', content_rw: '', content_fr: '',
         order_index: 0
     });
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if (!['system_admin', 'cep_admin'].includes(user?.role)) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>{t('admin.common.unauthorized')}</div>;
+    }
 
     const { data: sections, isLoading } = useQuery({
         queryKey: ['admin-about'],
@@ -176,6 +181,35 @@ const ManageAbout = () => {
                                         rows={8}
                                         value={formData.content_rw} 
                                         onChange={e => setFormData({...formData, content_rw: e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Français Content */}
+                        <div style={{ padding: '1.5rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'rgba(255,255,255,0.02)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0055a4', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 800 }}>FR</div>
+                                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Français Content</h3>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Titre de la section</label>
+                                    <input 
+                                        className="glass-input" 
+                                        placeholder="ex: Notre Histoire" 
+                                        value={formData.title_fr} 
+                                        onChange={e => setFormData({...formData, title_fr: e.target.value})}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Contenu</label>
+                                    <textarea 
+                                        className="glass-input" 
+                                        placeholder="Entrez le texte en français ici..." 
+                                        rows={8}
+                                        value={formData.content_fr} 
+                                        onChange={e => setFormData({...formData, content_fr: e.target.value})}
                                     />
                                 </div>
                             </div>

@@ -137,12 +137,12 @@ const Navbar = () => {
                     <div className="nav-auth" style={{ marginLeft: '0.5rem' }}>
                         {user && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                {user.role === 'admin' && (
+                                {['system_admin', 'cep_admin', 'choir_header'].includes(user.role) && (
                                     <Link to="/admin" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }} onClick={() => setIsMenuOpen(false)}>
                                         <LayoutDashboard size={18} /> {t('admin.title')}
                                     </Link>
                                 )}
-                                {hasUploadPerms && user.role !== 'admin' && (
+                                {hasUploadPerms && !['system_admin', 'cep_admin', 'choir_header'].includes(user.role) && (
                                     <Link to="/my-uploads" style={{ color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 600 }} onClick={() => setIsMenuOpen(false)}>
                                         <Upload size={18} /> {t('nav.my_uploads')}
                                     </Link>

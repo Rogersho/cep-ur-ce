@@ -53,16 +53,41 @@ const AdminLayout = () => {
         navigate('/login');
     };
 
-    let navItems = [
-        { path: '/admin', icon: <LayoutDashboard size={20} />, label: t('admin.nav.overview') },
-        { path: '/admin/events', icon: <Calendar size={20} />, label: t('admin.nav.events') },
-        { path: '/admin/choirs', icon: <Music size={20} />, label: t('admin.nav.choirs') },
-        { path: '/admin/albums', icon: <FolderOpen size={20} />, label: 'Albums' },
-        { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
-        { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
-        { path: '/admin/about', icon: <Info size={20} />, label: t('admin.nav.about') },
-        { path: '/admin/committee', icon: <Users size={20} />, label: t('admin.nav.committee') },
-    ];
+    let navItems = [];
+    if (user?.role === 'system_admin') {
+        navItems = [
+            { path: '/admin', icon: <LayoutDashboard size={20} />, label: t('admin.nav.overview') },
+            { path: '/admin/users', icon: <Users size={20} />, label: 'Users' },
+            { path: '/admin/events', icon: <Calendar size={20} />, label: t('admin.nav.events') },
+            { path: '/admin/choirs', icon: <Music size={20} />, label: t('admin.nav.choirs') },
+            { path: '/admin/albums', icon: <FolderOpen size={20} />, label: 'Albums' },
+            { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
+            { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
+            { path: '/admin/about', icon: <Info size={20} />, label: t('admin.nav.about') },
+            { path: '/admin/committee', icon: <Users size={20} />, label: t('admin.nav.committee') },
+        ];
+    } else if (user?.role === 'cep_admin') {
+        navItems = [
+            { path: '/admin', icon: <LayoutDashboard size={20} />, label: t('admin.nav.overview') },
+            { path: '/admin/events', icon: <Calendar size={20} />, label: t('admin.nav.events') },
+            { path: '/admin/choirs', icon: <Music size={20} />, label: t('admin.nav.choirs') },
+            { path: '/admin/albums', icon: <FolderOpen size={20} />, label: 'Albums' },
+            { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
+            { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
+            { path: '/admin/about', icon: <Info size={20} />, label: t('admin.nav.about') },
+            { path: '/admin/committee', icon: <Users size={20} />, label: t('admin.nav.committee') },
+        ];
+    } else if (user?.role === 'choir_header') {
+        navItems = [
+            { path: '/admin/choirs', icon: <Music size={20} />, label: t('admin.nav.choirs') },
+            { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
+        ];
+    } else {
+        // member with permissions
+        navItems = [
+            { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
+        ];
+    }
 
 
     return (

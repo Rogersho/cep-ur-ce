@@ -23,6 +23,7 @@ import ManageChoirs from './pages/Admin/ManageChoirs';
 import ManageAlbums from './pages/Admin/ManageAlbums';
 import ManageAbout from './pages/Admin/ManageAbout';
 import ManageCommittee from './pages/Admin/ManageCommittee';
+import ManageUsers from './pages/Admin/ManageUsers';
 
 function App() {
     return (
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/admin" element={<ProtectedAdminRoute />}>
                     <Route element={<AdminLayout />}>
                         <Route index element={<DashboardOverview />} />
+                        <Route path="users" element={<ManageUsers />} />
                         <Route path="events" element={<ManageEvents />} />
                         <Route path="albums" element={<ManageAlbums />} />
                         <Route path="gallery" element={<ManageGallery />} />

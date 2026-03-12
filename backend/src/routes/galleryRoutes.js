@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { getGalleryItems, addGalleryItem, deleteGalleryItem, updateGalleryItem } = require('../controllers/galleryController');
 const { protect, adminOnly } = require('../middleware/auth');
-const upload = require('../middleware/upload');
+const upload = require('../utils/upload');
 
 router.get('/', getGalleryItems);
 router.post('/', protect, upload.single('image'), addGalleryItem);
