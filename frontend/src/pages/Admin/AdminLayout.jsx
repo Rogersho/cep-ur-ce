@@ -13,7 +13,8 @@ import {
     Moon,
     Languages,
     FolderOpen,
-    Info
+    Info,
+    Users
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -60,6 +61,7 @@ const AdminLayout = () => {
         { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
         { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
         { path: '/admin/about', icon: <Info size={20} />, label: t('admin.nav.about') },
+        { path: '/admin/committee', icon: <Users size={20} />, label: t('admin.nav.committee') },
     ];
 
 

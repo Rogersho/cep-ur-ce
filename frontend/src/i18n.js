@@ -11,6 +11,7 @@ const resources = {
                 gallery: 'Gallery',
                 news: 'News',
                 about: 'About',
+                committee: 'Committee',
                 login: 'Login',
                 my_uploads: 'My Uploads'
             },
@@ -71,6 +72,14 @@ const resources = {
                 subtitle: 'Discover our story, mission, and the community that makes CEP UR-CE special.',
                 no_content: 'No content has been added yet.'
             },
+            committee: {
+                title: 'Our',
+                span: 'Committee',
+                subtitle: 'The dedicated leadership team serving the CEP UR-CE community.',
+                loading: 'Loading committee members...',
+                no_members: 'No committee members found.',
+                year_select: 'Filter by Academic Year'
+            },
             announcements: {
                 title: 'Latest',
                 span: 'Announcements',
@@ -86,6 +95,7 @@ const resources = {
                     gallery: 'Manage Gallery',
                     news: 'Manage News',
                     about: 'Manage About',
+                    committee: 'Manage Committee',
                     return: 'Return to Site',
                     logout: 'Logout'
                 },
@@ -179,6 +189,22 @@ const resources = {
                     success_create: 'Section added successfully!',
                     success_update: 'Section updated successfully!',
                     success_delete: 'Section deleted successfully!'
+                },
+                committee: {
+                    title: 'Manage Committee',
+                    add_btn: 'Add Member',
+                    edit_title: 'Edit Member',
+                    new_title: 'New Member Details',
+                    field_name: 'Full Name',
+                    field_position: 'Position',
+                    field_year: 'Year Range (e.g. 2024-2025)',
+                    field_phone: 'Phone Number',
+                    field_email: 'Email Address',
+                    field_bio: 'Short Bio',
+                    field_image: 'Member Photo',
+                    success_create: 'Member added successfully!',
+                    success_update: 'Member updated successfully!',
+                    success_delete: 'Member deleted successfully!'
                 },
                 gallery: {
                     title: 'Manage Gallery',

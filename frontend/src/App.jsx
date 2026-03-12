@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import MyUploads from './pages/MyUploads';
 import About from './pages/About';
+import Committee from './pages/Committee';
 
 // Admin Imports
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
@@ -21,6 +22,7 @@ import ManageAnnouncements from './pages/Admin/ManageAnnouncements';
 import ManageChoirs from './pages/Admin/ManageChoirs';
 import ManageAlbums from './pages/Admin/ManageAlbums';
 import ManageAbout from './pages/Admin/ManageAbout';
+import ManageCommittee from './pages/Admin/ManageCommittee';
 
 function App() {
     return (
@@ -38,6 +40,7 @@ function App() {
                                 <Route path="/gallery" element={<Gallery />} />
                                 <Route path="/announcements" element={<Announcements />} />
                                 <Route path="/about" element={<About />} />
+                                <Route path="/committee" element={<Committee />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/register" element={<Register />} />
                                 <Route path="/my-uploads" element={<MyUploads />} />
@@ -56,6 +59,7 @@ function App() {
                         <Route path="gallery" element={<ManageGallery />} />
                         <Route path="announcements" element={<ManageAnnouncements />} />
                         <Route path="about" element={<ManageAbout />} />
+                        <Route path="committee" element={<ManageCommittee />} />
                         <Route path="choirs" element={<ManageChoirs />} />
                     </Route>
                 </Route>

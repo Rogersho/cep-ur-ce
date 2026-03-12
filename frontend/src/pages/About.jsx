@@ -57,51 +57,70 @@ const About = () => {
                         <p style={{ color: 'var(--text-muted)' }}>{t('about.no_content') || 'No content has been added yet.'}</p>
                     </div>
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6rem' }}>
                         {sections.map((section, index) => {
+                            // Logic: If current language is available, use it. 
+                            // If user is in FR (or others) and it's missing, use EN as base.
                             const title = section[`title_${currentLang}`] || section.title_en;
                             const content = section[`content_${currentLang}`] || section.content_en;
                             const isEven = index % 2 === 0;
 
                             return (
-                                <div 
+                                <section 
                                     key={section.id} 
-                                    className="glass" 
                                     style={{ 
-                                        padding: '3rem', 
-                                        borderRadius: 'var(--radius)',
                                         display: 'flex',
                                         flexDirection: isEven ? 'row' : 'row-reverse',
                                         alignItems: 'center',
-                                        gap: '4rem',
-                                        flexWrap: 'wrap'
+                                        gap: '5rem',
+                                        flexWrap: 'wrap',
+                                        margin: '2rem 0'
                                     }}
                                 >
                                     {section.image_url && (
-                                        <div style={{ flex: '1 1 400px', borderRadius: '20px', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', height: '400px' }}>
+                                        <div style={{ 
+                                            flex: '1 1 450px', 
+                                            borderRadius: '30px', 
+                                            overflow: 'hidden', 
+                                            boxShadow: 'var(--shadow-xl)', 
+                                            height: '500px',
+                                            border: '1px solid var(--border)'
+                                        }}>
                                             <img 
-                                                src={optimizeCloudinaryUrl(section.image_url, { width: 800, height: 800 })} 
+                                                src={optimizeCloudinaryUrl(section.image_url, { width: 1000, height: 1000 })} 
                                                 alt={title} 
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                                                className="img-zoom"
                                                 loading="lazy"
                                             />
                                         </div>
                                     )}
-                                    <div style={{ flex: '1 1 400px' }}>
-                                        <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <div style={{ width: '40px', height: '4px', background: 'var(--primary)', borderRadius: '2px' }}></div>
+                                    <div style={{ flex: '1 1 450px', padding: '1rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                                            <div style={{ width: '50px', height: '4px', background: 'var(--primary)', borderRadius: '2px' }}></div>
+                                            <span style={{ textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 700, color: 'var(--primary)', fontSize: '0.9rem' }}>
+                                                {isEven ? 'Section' : 'Focus'} {(index + 1).toString().padStart(2, '0')}
+                                            </span>
+                                        </div>
+                                        <h2 style={{ fontSize: '2.8rem', fontWeight: 900, marginBottom: '2rem', color: 'var(--text-main)', lineHeight: 1.1, letterSpacing: '-1.5px' }}>
                                             {title}
                                         </h2>
                                         <div style={{ 
-                                            fontSize: '1.1rem', 
-                                            lineHeight: 1.8, 
+                                            fontSize: '1.15rem', 
+                                            lineHeight: 1.9, 
                                             color: 'var(--text-muted)',
-                                            whiteSpace: 'pre-wrap'
+                                            whiteSpace: 'pre-wrap',
+                                            textAlign: 'justify'
                                         }}>
                                             {content}
                                         </div>
+                                        {!section[`content_${currentLang}`] && currentLang !== 'en' && (
+                                            <p style={{ marginTop: '1.5rem', fontSize: '0.8rem', fontStyle: 'italic', opacity: 0.6, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <Info size={14} /> (Available in English)
+                                            </p>
+                                        )}
                                     </div>
-                                </div>
+                                </section>
                             );
                         })}
                     </div>

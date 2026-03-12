@@ -105,6 +105,7 @@ const Navbar = () => {
                     <NavLink to="/gallery" icon={<ImageIcon size={18} />} label={t('nav.gallery')} onClick={() => setIsMenuOpen(false)} />
                     <NavLink to="/announcements" icon={<Megaphone size={18} />} label={t('nav.news')} onClick={() => setIsMenuOpen(false)} />
                     <NavLink to="/about" icon={<Info size={18} />} label={t('nav.about')} onClick={() => setIsMenuOpen(false)} />
+                    <NavLink to="/committee" icon={<User size={18} />} label={t('nav.committee')} onClick={() => setIsMenuOpen(false)} />
 
                     <div className="nav-controls" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <button onClick={toggleTheme} className="theme-toggle glass" style={{ padding: '0.5rem', borderRadius: '50%', display: 'flex', border: 'none' }} title={`Theme: ${theme}`}>

@@ -10,6 +10,7 @@ const choirRoutes = require('./routes/choirRoutes');
 const galleryRoutes = require('./routes/galleryRoutes');
 const albumRoutes = require('./routes/albumRoutes');
 const aboutRoutes = require('./routes/aboutRoutes');
+const committeeRoutes = require('./routes/committeeRoutes');
 const dbInit = require('./utils/dbInit');
 const fs = require('fs-extra');
 
@@ -34,6 +35,7 @@ app.use('/api/choirs', choirRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/albums', albumRoutes);
 app.use('/api/about', aboutRoutes);
+app.use('/api/committee', committeeRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

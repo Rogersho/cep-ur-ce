@@ -79,6 +79,20 @@ CREATE TABLE IF NOT EXISTS about_sections (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- 8. Committee Members Table
+CREATE TABLE IF NOT EXISTS committee_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    position VARCHAR(255) NOT NULL,
+    bio TEXT,
+    year_range VARCHAR(50) NOT NULL, -- e.g. "2024-2025"
+    image_url VARCHAR(255),
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert Default Admin (Password: admin123 - hashed later in implementation)
 -- Tip: Use the dashboard to create first real admin or manually update this record with hashed pass.
 INSERT INTO users (username, email, password, role) 

@@ -120,61 +120,65 @@ const ManageAbout = () => {
                         <button onClick={resetForm} style={{ color: 'var(--text-muted)' }}><X size={24} /></button>
                     </div>
 
-                    <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                        {/* English */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                            <h3>English</h3>
-                            <input 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_title_en')} 
-                                value={formData.title_en} 
-                                onChange={e => setFormData({...formData, title_en: e.target.value})}
-                                required
-                            />
-                            <textarea 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_content_en')} 
-                                rows={4}
-                                value={formData.content_en} 
-                                onChange={e => setFormData({...formData, content_en: e.target.value})}
-                                required
-                            />
+                    <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                        {/* English Content */}
+                        <div style={{ padding: '1.5rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'rgba(255,255,255,0.02)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 800 }}>EN</div>
+                                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>English Content</h3>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Section Title</label>
+                                    <input 
+                                        className="glass-input" 
+                                        placeholder="e.g. Our History" 
+                                        value={formData.title_en} 
+                                        onChange={e => setFormData({...formData, title_en: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Description/Body</label>
+                                    <textarea 
+                                        className="glass-input" 
+                                        placeholder="Enter the English text here..." 
+                                        rows={8}
+                                        value={formData.content_en} 
+                                        onChange={e => setFormData({...formData, content_en: e.target.value})}
+                                        required
+                                    />
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Kinyarwanda */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                            <h3>Kinyarwanda</h3>
-                            <input 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_title_rw')} 
-                                value={formData.title_rw} 
-                                onChange={e => setFormData({...formData, title_rw: e.target.value})}
-                            />
-                            <textarea 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_content_rw')} 
-                                rows={4}
-                                value={formData.content_rw} 
-                                onChange={e => setFormData({...formData, content_rw: e.target.value})}
-                            />
-                        </div>
-
-                        {/* French */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
-                            <h3>French</h3>
-                            <input 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_title_fr')} 
-                                value={formData.title_fr} 
-                                onChange={e => setFormData({...formData, title_fr: e.target.value})}
-                            />
-                            <textarea 
-                                className="glass-input" 
-                                placeholder={t('admin.about.field_content_fr')} 
-                                rows={4}
-                                value={formData.content_fr} 
-                                onChange={e => setFormData({...formData, content_fr: e.target.value})}
-                            />
+                        {/* Kinyarwanda Content */}
+                        <div style={{ padding: '1.5rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'rgba(255,255,255,0.02)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ffcc00', color: 'black', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 800 }}>RW</div>
+                                <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Kinyarwanda Content</h3>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Umutwe (Title)</label>
+                                    <input 
+                                        className="glass-input" 
+                                        placeholder="Amateka yacu" 
+                                        value={formData.title_rw} 
+                                        onChange={e => setFormData({...formData, title_rw: e.target.value})}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Ibirimo (Content)</label>
+                                    <textarea 
+                                        className="glass-input" 
+                                        placeholder="Andika amagambo mu Kinyarwanda..." 
+                                        rows={8}
+                                        value={formData.content_rw} 
+                                        onChange={e => setFormData({...formData, content_rw: e.target.value})}
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         {/* Global Settings */}
