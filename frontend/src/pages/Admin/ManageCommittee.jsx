@@ -22,8 +22,6 @@ const ManageCommittee = () => {
     });
     const user = JSON.parse(localStorage.getItem('user'));
 
-
-
     const { data: members, isLoading } = useQuery({
         queryKey: ['admin-committee'],
         queryFn: async () => {
@@ -79,11 +77,7 @@ const ManageCommittee = () => {
     }
 
     const resetForm = () => {
-        setFormData({
-            name: '', email: '', phone: '',
-            position: '', bio: '', year_range: '',
-            order_index: 0
-        });
+        setFormData({ name: '', email: '', phone: '', position: '', bio: '', year_range: '', order_index: 0 });
         setImage(null);
         setEditId(null);
         setShowForm(false);
@@ -108,129 +102,140 @@ const ManageCommittee = () => {
         mutation.mutate(formData);
     };
 
-    const filteredMembers = members?.filter(m => 
-        m.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const filteredMembers = members?.filter(m =>
+        m.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.position?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         m.year_range?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const inputStyle = {
+        width: '100%', padding: '0.75rem',
+        borderRadius: 'var(--radius)',
+        border: '1px solid var(--border)',
+        background: 'var(--white)',
+        color: 'var(--text-main)',
+        fontSize: '0.92rem',
+        outline: 'none'
+    };
+
+    const labelStyle = {
+        display: 'block', fontWeight: 600,
+        marginBottom: '0.4rem',
+        fontSize: '0.85rem',
+        color: 'var(--text-muted)'
+    };
+
     return (
-        <div style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
-                <div>
-                    <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' }}>{t('admin.committee.title')}</h1>
-                    <p style={{ color: 'var(--text-muted)' }}>Manage the leadership committee and academic years.</p>
-                </div>
-                {!showForm && (
-                    <button 
-                        onClick={() => setShowForm(true)}
-                        className="btn-primary" 
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem' }}
-                    >
-                        <Plus size={20} /> {t('admin.committee.add_btn')}
-                    </button>
-                )}
+        <div>
+            {/* ── Header ── */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
+                <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)' }}>{t('admin.committee.title')}</h1>
+                <button
+                    onClick={() => setShowForm(true)}
+                    className="btn-primary"
+                    style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                >
+                    <Plus size={20} /> {t('admin.committee.add_btn')}
+                </button>
             </div>
 
+            {/* ── Modal Form ── */}
             {showForm && (
-                <div className="glass" style={{ padding: '2.5rem', borderRadius: 'var(--radius-lg)', marginBottom: '3rem', border: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                        <h2 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{editId ? t('admin.committee.edit_title') : t('admin.committee.new_title')}</h2>
-                        <button onClick={resetForm} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={24} /></button>
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+                    background: 'rgba(0,0,0,0.6)',
+                    backdropFilter: 'blur(6px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 2000, padding: '1rem'
+                }}>
+                    <div className="glass" style={{
+                        width: '100%', maxWidth: '680px',
+                        borderRadius: 'var(--radius)',
+                        padding: '2.5rem',
+                        position: 'relative',
+                        background: 'var(--card-bg)',
+                        maxHeight: '90vh', overflowY: 'auto',
+                        boxShadow: '0 25px 60px rgba(0,0,0,0.4)'
+                    }}>
+                        <button onClick={resetForm} style={{
+                            position: 'absolute', top: '1.5rem', right: '1.5rem',
+                            background: 'none', color: 'var(--text-muted)', border: 'none', cursor: 'pointer',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <X size={24} />
+                        </button>
+
+                        <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '2rem', color: 'var(--text-main)' }}>
+                            {editId ? t('admin.committee.edit_title') : t('admin.committee.new_title')}
+                        </h2>
+
+                        <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_name')}</label>
+                                <input style={inputStyle} value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_position')}</label>
+                                <input style={inputStyle} value={formData.position} onChange={e => setFormData({...formData, position: e.target.value})} required />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_year')}</label>
+                                <input style={inputStyle} placeholder="e.g. 2024-2025" value={formData.year_range} onChange={e => setFormData({...formData, year_range: e.target.value})} required />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_email')}</label>
+                                <input type="email" style={inputStyle} value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_phone')}</label>
+                                <input style={inputStyle} value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>{t('admin.committee.field_order')}</label>
+                                <input type="number" style={inputStyle} value={formData.order_index} onChange={e => setFormData({...formData, order_index: parseInt(e.target.value) || 0})} />
+                            </div>
+                            <div style={{ gridColumn: '1 / -1' }}>
+                                <label style={labelStyle}>{t('admin.committee.field_bio')}</label>
+                                <textarea rows={3} style={{ ...inputStyle, resize: 'none' }} value={formData.bio} onChange={e => setFormData({...formData, bio: e.target.value})} />
+                            </div>
+                            <div style={{ gridColumn: '1 / -1' }}>
+                                <label style={labelStyle}>{t('admin.committee.field_image')}</label>
+                                <div style={{
+                                    border: '2px dashed var(--border)', borderRadius: 'var(--radius)',
+                                    padding: '1.25rem', textAlign: 'center', background: 'var(--secondary)'
+                                }}>
+                                    <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} style={{ width: '100%', cursor: 'pointer' }} />
+                                    {image && <p style={{ fontSize: '0.8rem', color: 'var(--primary)', marginTop: '0.5rem', fontWeight: 600 }}>📎 {image.name}</p>}
+                                    {editId && !image && members?.find(m => m.id === editId)?.image_url && (
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>✓ Current image will be kept</p>
+                                    )}
+                                </div>
+                            </div>
+                            <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
+                                <button type="submit" className="btn-primary" disabled={mutation.isLoading}
+                                    style={{ width: '100%', padding: '0.875rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '1rem' }}>
+                                    <Save size={20} />
+                                    {mutation.isLoading ? t('admin.common.loading') : (editId ? t('admin.common.update') : t('admin.common.save'))}
+                                </button>
+                            </div>
+                        </form>
                     </div>
-
-                    <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_name')}</label>
-                            <input 
-                                className="glass-input" 
-                                value={formData.name} 
-                                onChange={e => setFormData({...formData, name: e.target.value})}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_position')}</label>
-                            <input 
-                                className="glass-input" 
-                                value={formData.position} 
-                                onChange={e => setFormData({...formData, position: e.target.value})}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_year')}</label>
-                            <input 
-                                className="glass-input" 
-                                placeholder="2024-2025"
-                                value={formData.year_range} 
-                                onChange={e => setFormData({...formData, year_range: e.target.value})}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_email')}</label>
-                            <input 
-                                type="email"
-                                className="glass-input" 
-                                value={formData.email} 
-                                onChange={e => setFormData({...formData, email: e.target.value})}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_phone')}</label>
-                            <input 
-                                className="glass-input" 
-                                value={formData.phone} 
-                                onChange={e => setFormData({...formData, phone: e.target.value})}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="input-label">{t('admin.committee.field_order')}</label>
-                            <input 
-                                type="number"
-                                className="glass-input" 
-                                value={formData.order_index} 
-                                onChange={e => setFormData({...formData, order_index: parseInt(e.target.value) || 0})}
-                            />
-                        </div>
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                            <label className="input-label">{t('admin.committee.field_bio')}</label>
-                            <textarea 
-                                className="glass-input" 
-                                rows={3}
-                                value={formData.bio} 
-                                onChange={e => setFormData({...formData, bio: e.target.value})}
-                            />
-                        </div>
-                        <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-                            <label className="input-label">{t('admin.committee.field_image')}</label>
-                            <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])} />
-                            {editId && !image && members?.find(m => m.id === editId)?.image_url && (
-                                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Current image exists.</p>
-                            )}
-                        </div>
-
-                        <div style={{ gridColumn: '1 / -1', marginTop: '1rem' }}>
-                            <button type="submit" className="btn-primary" disabled={mutation.isLoading} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                <Save size={20} /> {mutation.isLoading ? t('admin.common.loading') : (editId ? t('admin.common.update') : t('admin.common.save'))}
-                            </button>
-                        </div>
-                    </form>
                 </div>
             )}
 
+            {/* ── Search Bar ── */}
             <div className="glass" style={{ padding: '0.75rem 1.5rem', borderRadius: 'var(--radius)', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1rem', border: '1px solid var(--border)' }}>
                 <Search size={20} color="var(--text-muted)" />
-                <input 
-                    type="text" 
-                    placeholder="Search committee by name, year or position..." 
+                <input
+                    type="text"
+                    placeholder="Search committee by name, year or position..."
                     style={{ background: 'transparent', border: 'none', outline: 'none', color: 'var(--text-main)', width: '100%', fontSize: '1rem' }}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
 
+            {/* ── Members Grid ── */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '1.5rem' }}>
                 {isLoading ? (
                     <p>{t('admin.common.loading')}</p>
@@ -238,7 +243,7 @@ const ManageCommittee = () => {
                     <div key={member.id} className="glass" style={{ padding: '1.25rem', borderRadius: 'var(--radius)', display: 'flex', gap: '1.5rem', border: '1px solid var(--border)' }}>
                         <div style={{ width: '90px', height: '110px', borderRadius: '12px', overflow: 'hidden', background: 'var(--secondary)', flexShrink: 0 }}>
                             {member.image_url ? (
-                                <img src={optimizeCloudinaryUrl(member.image_url, { width: 180 })} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={optimizeCloudinaryUrl(member.image_url, { width: 180 })} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.2 }}>
                                     <ImageIcon />
@@ -248,9 +253,9 @@ const ManageCommittee = () => {
                         <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <h3 style={{ fontWeight: 800, fontSize: '1.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{member.name}</h3>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                    <button onClick={() => handleEdit(member)} className="icon-btn-edit" style={{ color: 'var(--primary)' }}><Edit2 size={18} /></button>
-                                    <button onClick={() => deleteMutation.mutate(member.id)} className="icon-btn-delete" style={{ color: '#ef4444' }}><Trash2 size={18} /></button>
+                                <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+                                    <button onClick={() => handleEdit(member)} style={{ color: 'var(--primary)', background: 'none' }}><Edit2 size={18} /></button>
+                                    <button onClick={() => deleteMutation.mutate(member.id)} style={{ color: '#ef4444', background: 'none' }}><Trash2 size={18} /></button>
                                 </div>
                             </div>
                             <p style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.85rem' }}>{member.position}</p>
