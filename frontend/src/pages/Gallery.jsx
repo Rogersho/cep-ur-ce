@@ -5,6 +5,7 @@ import { Image as ImageIcon, Maximize2, Search, X, ChevronLeft, ChevronRight, Mu
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../api';
+import { optimizeCloudinaryUrl } from '../utils/cloudinary';
 
 const PAGE_SIZE = 12;
 
@@ -231,7 +232,12 @@ const Gallery = () => {
                                 {item.media_type === 'video' ? (
                                     <video src={item.image_path.startsWith('http') ? item.image_path : `${API_BASE}${item.image_path}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} muted />
                                 ) : (
-                                    <img src={item.image_path.startsWith('http') ? item.image_path : `${API_BASE}${item.image_path}`} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img 
+                                        src={item.image_path.startsWith('http') ? optimizeCloudinaryUrl(item.image_path, { width: 400, height: 400 }) : `${API_BASE}${item.image_path}`} 
+                                        alt={item.title} 
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                        loading="lazy"
+                                    />
                                 )}
                                 <div className="gallery-overlay" style={{
                                     position: 'absolute', inset: 0,
@@ -293,9 +299,13 @@ const Gallery = () => {
                     >
                         <div style={{ position: 'relative', maxWidth: '90%', maxHeight: '90%', boxShadow: '0 0 50px rgba(0,0,0,0.5)' }}>
                             {selectedImage.media_type === 'video' ? (
-                                <video src={selectedImage.image_path.startsWith('http') ? selectedImage.image_path : `${API_BASE}${selectedImage.image_path}`} style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }} controls autoPlay />
+                                <video src={selectedImage.image_path.startsWith('http') ? optimizeCloudinaryUrl(selectedImage.image_path, { width: 1280 }) : `${API_BASE}${selectedImage.image_path}`} style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }} controls autoPlay />
                             ) : (
-                                <img src={selectedImage.image_path.startsWith('http') ? selectedImage.image_path : `${API_BASE}${selectedImage.image_path}`} alt={selectedImage.title} style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }} />
+                                <img 
+                                    src={selectedImage.image_path.startsWith('http') ? optimizeCloudinaryUrl(selectedImage.image_path, { width: 1600 }) : `${API_BASE}${selectedImage.image_path}`} 
+                                    alt={selectedImage.title} 
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '8px' }} 
+                                />
                             )}
                             <div style={{ position: 'absolute', bottom: '-3rem', left: 0, right: 0, textAlign: 'center', color: 'white' }}>
                                 <h3 style={{ fontSize: '1.4rem', fontWeight: 700 }}>{selectedImage.title}</h3>

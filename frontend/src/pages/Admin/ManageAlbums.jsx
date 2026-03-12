@@ -6,6 +6,7 @@ import { useToast } from '../../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../../api';
 import { Link } from 'react-router-dom';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 const ManageAlbums = () => {
     const { t } = useTranslation();
@@ -255,7 +256,7 @@ const ManageAlbums = () => {
                     <div key={album.id} className="glass" style={{ borderRadius: 'var(--radius)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                         <div style={{ height: '160px', position: 'relative', background: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             {album.cover_image ? (
-                                <img src={album.cover_image.startsWith('http') ? album.cover_image : `${API_BASE}${album.cover_image}`} alt={album.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                <img src={album.cover_image.startsWith('http') ? optimizeCloudinaryUrl(album.cover_image, { width: 400, height: 300 }) : `${API_BASE}${album.cover_image}`} alt={album.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
                             ) : (
                                 <Folder size={64} style={{ color: 'var(--primary)', opacity: 0.5 }} />
                             )}

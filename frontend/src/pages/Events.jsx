@@ -8,6 +8,7 @@ import download from 'downloadjs';
 import { useRef, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../api';
+import { optimizeCloudinaryUrl } from '../utils/cloudinary';
 
 const PAGE_SIZE = 9;
 
@@ -220,11 +221,12 @@ const Events = () => {
                                 <div style={{ height: '220px', width: '100%', position: 'relative', overflow: 'hidden' }}>
                                     {event.image_url ? (
                                         <img
-                                            src={event.image_url.startsWith('http') ? event.image_url : `${API_BASE}${event.image_url}`}
+                                            src={event.image_url.startsWith('http') ? optimizeCloudinaryUrl(event.image_url, { width: 600, height: 400 }) : `${API_BASE}${event.image_url}`}
                                             alt={event.title}
                                             crossOrigin="anonymous"
                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }}
                                             className="zoom-image"
+                                            loading="lazy"
                                         />
                                     ) : (
                                         <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -413,7 +415,7 @@ const Events = () => {
                         <div style={{ height: '280px', position: 'relative', overflow: 'hidden', flexShrink: 0 }}>
                             {selectedEvent.image_url ? (
                                 <img
-                                    src={selectedEvent.image_url.startsWith('http') ? selectedEvent.image_url : `${API_BASE}${selectedEvent.image_url}`}
+                                    src={selectedEvent.image_url.startsWith('http') ? optimizeCloudinaryUrl(selectedEvent.image_url, { width: 1200 }) : `${API_BASE}${selectedEvent.image_url}`}
                                     alt={selectedEvent.title}
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
@@ -524,10 +526,11 @@ const Events = () => {
                         {/* Background Image — low opacity */}
                         {event.image_url && (
                             <img
-                                src={event.image_url.startsWith('http') ? event.image_url : `${API_BASE}${event.image_url}`}
+                                src={event.image_url.startsWith('http') ? optimizeCloudinaryUrl(event.image_url, { width: 1200, quality: 60 }) : `${API_BASE}${event.image_url}`}
                                 crossOrigin="anonymous"
                                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.45 }}
                                 alt=""
+                                loading="lazy"
                             />
                         )}
 

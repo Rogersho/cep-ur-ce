@@ -64,6 +64,21 @@ CREATE TABLE IF NOT EXISTS service_schedules (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 7. About Sections Table
+CREATE TABLE IF NOT EXISTS about_sections (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title_en VARCHAR(255),
+    title_rw VARCHAR(255),
+    title_fr VARCHAR(255),
+    content_en TEXT,
+    content_rw TEXT,
+    content_fr TEXT,
+    image_url VARCHAR(255),
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Insert Default Admin (Password: admin123 - hashed later in implementation)
 -- Tip: Use the dashboard to create first real admin or manually update this record with hashed pass.
 INSERT INTO users (username, email, password, role) 

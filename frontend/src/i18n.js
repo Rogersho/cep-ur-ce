@@ -66,6 +66,11 @@ const resources = {
                 leader: 'Leader',
                 view_gallery: 'View Gallery'
             },
+            about: {
+                loading: 'Loading about us...',
+                subtitle: 'Discover our story, mission, and the community that makes CEP UR-CE special.',
+                no_content: 'No content has been added yet.'
+            },
             announcements: {
                 title: 'Latest',
                 span: 'Announcements',
@@ -80,6 +85,7 @@ const resources = {
                     choirs: 'Manage Choirs',
                     gallery: 'Manage Gallery',
                     news: 'Manage News',
+                    about: 'Manage About',
                     return: 'Return to Site',
                     logout: 'Logout'
                 },
@@ -156,6 +162,23 @@ const resources = {
                     error_create: 'Error publishing announcement',
                     error_update: 'Error updating announcement',
                     error_delete: 'Error removing announcement'
+                },
+                about: {
+                    title: 'Manage About Us',
+                    add_btn: 'Add Section',
+                    edit_title: 'Edit Section',
+                    new_title: 'New About Section',
+                    field_title_en: 'Title (English)',
+                    field_title_rw: 'Title (Kinyarwanda)',
+                    field_title_fr: 'Title (French)',
+                    field_content_en: 'Content (English)',
+                    field_content_rw: 'Content (Kinyarwanda)',
+                    field_content_fr: 'Content (French)',
+                    field_image: 'Illustration Image',
+                    field_order: 'Display Order (lower is first)',
+                    success_create: 'Section added successfully!',
+                    success_update: 'Section updated successfully!',
+                    success_delete: 'Section deleted successfully!'
                 },
                 gallery: {
                     title: 'Manage Gallery',
@@ -252,6 +275,11 @@ const resources = {
                 leader: 'Umuyobozi',
                 view_gallery: 'Reba amafoto'
             },
+            about: {
+                loading: 'Itegerezwa...',
+                subtitle: 'Menya amateka yacu, inshingano, n’umuryango ugize CEP UR-CE.',
+                no_content: 'Nta makuru arashyirwa hano.'
+            },
             announcements: {
                 title: 'Amakuru',
                 span: 'Agezweho',
@@ -266,6 +294,7 @@ const resources = {
                     choirs: 'Gucunga korali',
                     gallery: 'Gucunga amafoto',
                     news: 'Gucunga amakuru',
+                    about: 'Gucunga Ibitwerekeye',
                     return: 'Subira ku rubuga',
                     logout: 'Sohoka'
                 },
@@ -342,6 +371,23 @@ const resources = {
                     error_create: 'Ikibazo mu gushyiraho amakuru',
                     error_update: 'Ikibazo mu kuvugurura amakuru',
                     error_delete: 'Ikibazo mu gusiba amakuru'
+                },
+                about: {
+                    title: 'Gucunga Ibitwerekeye',
+                    add_btn: 'Ongeraho igice',
+                    edit_title: 'Hindura igice',
+                    new_title: 'Igice gishya',
+                    field_title_en: 'Umutwe (Icyongereza)',
+                    field_title_rw: 'Umutwe (Ikinyarwanda)',
+                    field_title_fr: 'Umutwe (Igifaransa)',
+                    field_content_en: 'Ibirimo (Icyongereza)',
+                    field_content_rw: 'Ibirimo (Ikinyarwanda)',
+                    field_content_fr: 'Ibirimo (Igifaransa)',
+                    field_image: 'Ifoto',
+                    field_order: 'Urutonde',
+                    success_create: 'Byashyizweho neza!',
+                    success_update: 'Byavuguruwe neza!',
+                    success_delete: 'Byasibwe neza!'
                 },
                 gallery: {
                     title: 'Gucunga Amafoto',
@@ -438,6 +484,11 @@ const resources = {
                 leader: 'Leader',
                 view_gallery: 'Voir la galerie'
             },
+            about: {
+                loading: 'Chargement...',
+                subtitle: 'Découvrez notre histoire, notre mission et la communauté de la CEP UR-CE.',
+                no_content: 'Aucun contenu n\'a encore été ajouté.'
+            },
             announcements: {
                 title: 'Dernières',
                 span: 'Annonces',
@@ -452,6 +503,7 @@ const resources = {
                     choirs: 'Gérer les chorales',
                     gallery: 'Gérer la galerie',
                     news: 'Gérer les actualités',
+                    about: 'Gérer À propos',
                     return: 'Retour au site',
                     logout: 'Déconnexion'
                 },
@@ -528,6 +580,23 @@ const resources = {
                     error_create: 'Erreur lors de la publication',
                     error_update: 'Erreur lors de la mise à jour',
                     error_delete: 'Erreur lors de la suppression'
+                },
+                about: {
+                    title: 'Gérer À propos de nous',
+                    add_btn: 'Ajouter une section',
+                    edit_title: 'Modifier la section',
+                    new_title: 'Nouvelle section À propos',
+                    field_title_en: 'Titre (Anglais)',
+                    field_title_rw: 'Titre (Kinyarwanda)',
+                    field_title_fr: 'Titre (Français)',
+                    field_content_en: 'Contenu (Anglais)',
+                    field_content_rw: 'Contenu (Kinyarwanda)',
+                    field_content_fr: 'Contenu (Français)',
+                    field_image: 'Image d\'illustration',
+                    field_order: 'Ordre d\'affichage',
+                    success_create: 'Section ajoutée avec succès !',
+                    success_update: 'Section mise à jour avec succès !',
+                    success_delete: 'Section supprimée avec succès !'
                 },
                 gallery: {
                     title: 'Gérer la galerie',

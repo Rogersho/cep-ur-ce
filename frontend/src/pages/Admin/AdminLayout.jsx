@@ -38,11 +38,7 @@ const AdminLayout = () => {
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme(prev => {
-            if (prev === 'light') return 'dark';
-            if (prev === 'dark') return 'auto';
-            return 'light';
-        });
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
     };
 
     const changeLanguage = (lng) => {
@@ -62,6 +58,7 @@ const AdminLayout = () => {
         { path: '/admin/albums', icon: <FolderOpen size={20} />, label: 'Albums' },
         { path: '/admin/gallery', icon: <ImageIcon size={20} />, label: t('admin.nav.gallery') },
         { path: '/admin/announcements', icon: <Megaphone size={20} />, label: t('admin.nav.news') },
+        { path: '/admin/about', icon: <Info size={20} />, label: t('admin.nav.about') },
     ];
 
 

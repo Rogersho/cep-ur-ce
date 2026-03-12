@@ -5,6 +5,7 @@ import { Plus, Trash2, Image as ImageIcon, X, Upload } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../../api';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 const ManageGallery = () => {
     const { t } = useTranslation();
@@ -322,9 +323,14 @@ const ManageGallery = () => {
                 ) : gallery.map(photo => (
                     <div key={photo.id} className="glass" style={{ borderRadius: 'var(--radius)', overflow: 'hidden', position: 'relative' }}>
                         {photo.media_type === 'video' ? (
-                            <video src={photo.image_path.startsWith('http') ? photo.image_path : `${API_BASE}${photo.image_path}`} style={{ width: '100%', height: '150px', objectFit: 'cover' }} controls controlsList="nodownload" />
+                            <video src={photo.image_path.startsWith('http') ? optimizeCloudinaryUrl(photo.image_path, { width: 400, height: 300 }) : `${API_BASE}${photo.image_path}`} style={{ width: '100%', height: '150px', objectFit: 'cover' }} controls controlsList="nodownload" />
                         ) : (
-                            <img src={photo.image_path.startsWith('http') ? photo.image_path : `${API_BASE}${photo.image_path}`} alt={photo.title} style={{ width: '100%', height: '150px', objectFit: 'cover' }} />
+                            <img 
+                                src={photo.image_path.startsWith('http') ? optimizeCloudinaryUrl(photo.image_path, { width: 400, height: 300 }) : `${API_BASE}${photo.image_path}`} 
+                                alt={photo.title} 
+                                style={{ width: '100%', height: '150px', objectFit: 'cover' }} 
+                                loading="lazy"
+                            />
                         )}
                         <div style={{ padding: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

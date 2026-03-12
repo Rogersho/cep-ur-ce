@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Music, Users, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import API_BASE from '../api';
+import { optimizeCloudinaryUrl } from '../utils/cloudinary';
 
 const Choirs = () => {
     const { t } = useTranslation();
@@ -90,9 +91,10 @@ const Choirs = () => {
                                 }}>
                                     {choir.thumbnail_url ? (
                                         <img
-                                            src={choir.thumbnail_url.startsWith('http') ? choir.thumbnail_url : `${API_BASE}${choir.thumbnail_url}`}
+                                            src={choir.thumbnail_url.startsWith('http') ? optimizeCloudinaryUrl(choir.thumbnail_url, { width: 240, height: 240 }) : `${API_BASE}${choir.thumbnail_url}`}
                                             alt={choir.name}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            loading="lazy"
                                         />
                                     ) : (
                                         <Music size={60} color="var(--primary)" />

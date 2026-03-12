@@ -41,11 +41,7 @@ const Navbar = () => {
     }, [theme]);
 
     const toggleTheme = () => {
-        setTheme(prev => {
-            if (prev === 'light') return 'dark';
-            if (prev === 'dark') return 'auto';
-            return 'light';
-        });
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
     };
 
     const changeLanguage = (lng) => {
@@ -112,8 +108,7 @@ const Navbar = () => {
 
                     <div className="nav-controls" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <button onClick={toggleTheme} className="theme-toggle glass" style={{ padding: '0.5rem', borderRadius: '50%', display: 'flex', border: 'none' }} title={`Theme: ${theme}`}>
-                            {theme === 'dark' ? <Moon size={18} /> : theme === 'light' ? <Sun size={18} /> :
-                                (window.matchMedia('(prefers-color-scheme: dark)').matches ? <Moon size={18} opacity={0.5} /> : <Sun size={18} opacity={0.5} />)}
+                            {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
                         </button>
 
                         <div className="lang-switcher" style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
