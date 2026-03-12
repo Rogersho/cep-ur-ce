@@ -98,9 +98,14 @@ const Gallery = () => {
     });
 
     const hasUploadPrivilege = user && (
-        ['system_admin', 'cep_admin', 'choir_header'].includes(user.role) ||
-        myPerms?.choirs?.length > 0 ||
-        myPerms?.albums?.length > 0
+        ['system_admin', 'cep_admin'].includes(user.role) ||
+        (activeChoir !== 'all' && (user.role === 'choir_header' || myPerms?.choirs?.some(c => String(c.id) === String(activeChoir)))) ||
+        (activeAlbum !== 'all' && (myPerms?.albums?.some(a => String(a.id) === String(activeAlbum)))) ||
+        (activeChoir === 'all' && activeAlbum === 'all' && (
+            ['system_admin', 'cep_admin', 'choir_header'].includes(user.role) ||
+            myPerms?.choirs?.length > 0 ||
+            myPerms?.albums?.length > 0
+        ))
     );
 
     return (
@@ -178,12 +183,27 @@ const Gallery = () => {
                         )}
                     </div>
 
-                    {/* Album pills */}
+                    {/* Album and Choir pills */}
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                        {[{ id: 'all', title: 'All Albums' }, ...(albums || [])].map(album => (
+                        {[{ id: 'all', title: t('admin.gallery_pills.all') }].map(pill => (
+                            <button
+                                key={pill.id}
+                                onClick={() => { setActiveAlbum('all'); setActiveChoir('all'); setSearchParams({}); setPage(1); }}
+                                style={{
+                                    padding: '0.35rem 0.9rem', borderRadius: '20px',
+                                    fontSize: '0.82rem', fontWeight: (activeAlbum === 'all' && activeChoir === 'all') ? 700 : 500,
+                                    border: (activeAlbum === 'all' && activeChoir === 'all') ? 'none' : '1px solid var(--border)',
+                                    background: (activeAlbum === 'all' && activeChoir === 'all') ? 'var(--primary)' : 'var(--background)',
+                                    color: (activeAlbum === 'all' && activeChoir === 'all') ? 'white' : 'var(--text-muted)',
+                                    cursor: 'pointer', transition: 'all 0.2s ease', whiteSpace: 'nowrap'
+                                }}
+                            >{pill.title}</button>
+                        ))}
+
+                        {albums?.map(album => (
                             <button
                                 key={album.id}
-                                onClick={() => handleFilterChange(String(album.id))}
+                                onClick={() => { setActiveAlbum(String(album.id)); setActiveChoir('all'); setSearchParams({}); setPage(1); }}
                                 style={{
                                     padding: '0.35rem 0.9rem', borderRadius: '20px',
                                     fontSize: '0.82rem', fontWeight: activeAlbum === String(album.id) ? 700 : 500,
@@ -192,7 +212,22 @@ const Gallery = () => {
                                     color: activeAlbum === String(album.id) ? 'white' : 'var(--text-muted)',
                                     cursor: 'pointer', transition: 'all 0.2s ease', whiteSpace: 'nowrap'
                                 }}
-                            >{album.title}</button>
+                            >{album.title} {t('admin.gallery_pills.album')}</button>
+                        ))}
+
+                        {choirs?.map(choir => (
+                            <button
+                                key={choir.id}
+                                onClick={() => { setActiveChoir(String(choir.id)); setActiveAlbum('all'); setSearchParams({ choirId: choir.id }); setPage(1); }}
+                                style={{
+                                    padding: '0.35rem 0.9rem', borderRadius: '20px',
+                                    fontSize: '0.82rem', fontWeight: activeChoir === String(choir.id) ? 700 : 500,
+                                    border: activeChoir === String(choir.id) ? 'none' : '1px solid var(--border)',
+                                    background: activeChoir === String(choir.id) ? '#10b981' : 'var(--background)',
+                                    color: activeChoir === String(choir.id) ? 'white' : 'var(--text-muted)',
+                                    cursor: 'pointer', transition: 'all 0.2s ease', whiteSpace: 'nowrap'
+                                }}
+                            >{choir.name} {t('admin.gallery_pills.choir')}</button>
                         ))}
                     </div>
 

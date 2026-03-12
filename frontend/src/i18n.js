@@ -121,7 +121,13 @@ const resources = {
                     activity: 'Platform Activity',
                     no_activity: 'No recent activity records found.',
                     created: 'Created',
-                    updating: 'Updating platform statistics...'
+                    updating: 'Updating platform statistics...',
+                    total_users: 'Total Users'
+                },
+                gallery_pills: {
+                    all: 'All moments',
+                    album: '(Album)',
+                    choir: '(Choir)'
                 },
                 events: {
                     title: 'Manage Events',
@@ -346,7 +352,13 @@ const resources = {
                     activity: 'Iheruka gukorwa',
                     no_activity: 'Nta gikorwa giheruka kuboneka.',
                     created: 'Byashyizweho',
-                    updating: 'Gushaka imibare...'
+                    updating: 'Gushaka imibare...',
+                    total_users: 'Abakoresha bose'
+                },
+                gallery_pills: {
+                    all: 'Ibihe byose',
+                    album: '(Albamu)',
+                    choir: '(Korali)'
                 },
                 events: {
                     title: 'Gucunga Ibikorwa',
@@ -555,7 +567,13 @@ const resources = {
                     activity: 'Activité de la plateforme',
                     no_activity: 'Aucun enregistrement d\'activité récente trouvé.',
                     created: 'Créé',
-                    updating: 'Mise à jour des statistiques...'
+                    updating: 'Mise à jour des statistiques...',
+                    total_users: 'Total des utilisateurs'
+                },
+                gallery_pills: {
+                    all: 'Tous les moments',
+                    album: '(Album)',
+                    choir: '(Chorale)'
                 },
                 events: {
                     title: 'Gérer les événements',

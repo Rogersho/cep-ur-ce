@@ -1,0 +1,37 @@
+[
+  {
+    "field": "id",
+    "type": "int",
+    "default": null
+  },
+  {
+    "field": "username",
+    "type": "varchar(255)",
+    "default": null
+  },
+  {
+    "field": "email",
+    "type": "varchar(255)",
+    "default": null
+  },
+  {
+    "field": "password",
+    "type": "varchar(255)",
+    "default": null
+  },
+  {
+    "field": "role",
+    "type": "enum('system_admin','cep_admin','choir_header','member')",
+    "default": "member"
+  },
+  {
+    "field": "status",
+    "type": "enum('active','suspended')",
+    "default": "active"
+  },
+  {
+    "field": "created_at",
+    "type": "timestamp",
+    "default": "CURRENT_TIMESTAMP"
+  }
+]

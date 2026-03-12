@@ -7,6 +7,7 @@ import API_BASE from '../../api';
 const DashboardOverview = () => {
     const { t } = useTranslation();
     const user = JSON.parse(localStorage.getItem('user'));
+
     const { data: stats, isLoading } = useQuery({
         queryKey: ['admin-stats'],
         queryFn: async () => {
@@ -15,7 +16,10 @@ const DashboardOverview = () => {
                 axios.get(`${API_BASE}/api/events`),
                 axios.get(`${API_BASE}/api/choirs`),
                 axios.get(`${API_BASE}/api/gallery`),
-                axios.get(`${API_BASE}/api/announcements`)
+                axios.get(`${API_BASE}/api/announcements`),
+                user?.role === 'system_admin' 
+                    ? axios.get(`${API_BASE}/api/auth/users`, { headers: { 'Authorization': `Bearer ${token}` } })
+                    : Promise.resolve({ data: [] })
             ]);
 
             return {
@@ -47,6 +51,9 @@ const DashboardOverview = () => {
                 <StatCard icon={<Music size={24} />} title={t('admin.dashboard.active_choirs')} value={stats?.choirs} color="#8b5cf6" delay={0.2} />
                 <StatCard icon={<ImageIcon size={24} />} title={t('admin.dashboard.gallery_items')} value={stats?.gallery} color="#ec4899" delay={0.3} />
                 <StatCard icon={<Megaphone size={24} />} title={t('admin.dashboard.announcements')} value={stats?.announcements} color="#f59e0b" delay={0.4} />
+                {user?.role === 'system_admin' && (
+                    <StatCard icon={<Users size={24} />} title={t('admin.dashboard.total_users')} value={stats?.users} color="#10b981" delay={0.5} />
+                )}
             </div>
 
             {/* Platform Activity Section */}
