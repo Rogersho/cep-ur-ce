@@ -8,11 +8,12 @@ const createDbAndTables = async () => {
     let connection;
     try {
         console.log('Connecting to MySQL server...');
+        console.log(`Connecting to MySQL server at ${process.env.DB_HOST}:${process.env.DB_PORT || 3306}...`);
         connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            port: process.env.DB_PORT || 3306,
+            host: (process.env.DB_HOST || '').trim(),
+            user: (process.env.DB_USER || '').trim(),
+            password: (process.env.DB_PASS || '').trim(),
+            port: parseInt(process.env.DB_PORT) || 3306,
             ssl: {
                 rejectUnauthorized: false
             }
